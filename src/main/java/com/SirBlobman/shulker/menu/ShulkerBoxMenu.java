@@ -4,30 +4,49 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
 
+import com.SirBlobman.api.menu.AdvancedAbstractMenu;
 import com.SirBlobman.shulker.ShulkerPlugin;
 
 import org.bukkit.block.BlockState;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.inventory.InventoryDragEvent;
-
-public class ShulkerBoxMenu extends AbstractMenu<ShulkerPlugin> {
+public class ShulkerBoxMenu extends AdvancedAbstractMenu<ShulkerPlugin> {
     private final ItemStack shulkerBoxItem;
     public ShulkerBoxMenu(ShulkerPlugin plugin, Player player, ItemStack shulkerBoxItem) {
         super(plugin, player);
         this.shulkerBoxItem = Objects.requireNonNull(shulkerBoxItem, "shulkerBoxItem must not be null!");
         if(!isShulkerBox(this.shulkerBoxItem)) throw new IllegalArgumentException("shulkerBoxItem must be a shulker box!");
     }
+
+    @Override
+    public Inventory getInventory() {
+        Inventory inventory = getInventory(27, "Shulker Box");
+        ItemStack[] originalContents = getContents();
+        inventory.setContents(originalContents.clone());
+        return inventory;
+    }
+
+    @Override
+    public void onValidClose(InventoryCloseEvent e) {
+        Inventory inventory = e.getInventory();
+        ItemStack[] contents = inventory.getContents();
+        setContents(contents);
+    }
     
     @Override
     public void onValidClick(InventoryClickEvent e) {
+        Inventory inventory = e.getInventory();
+        InventoryType inventoryType = inventory.getType();
+        if(inventoryType == InventoryType.PLAYER) return;
         e.setCancelled(false);
         
         ItemStack cursorItem = e.getCursor();
@@ -38,6 +57,9 @@ public class ShulkerBoxMenu extends AbstractMenu<ShulkerPlugin> {
     
     @Override
     public void onValidDrag(InventoryDragEvent e) {
+        Inventory inventory = e.getInventory();
+        InventoryType inventoryType = inventory.getType();
+        if(inventoryType == InventoryType.PLAYER) return;
         e.setCancelled(false);
     
         Map<Integer, ItemStack> newItemMap = e.getNewItems();
@@ -48,21 +70,6 @@ public class ShulkerBoxMenu extends AbstractMenu<ShulkerPlugin> {
             e.setCancelled(true);
             break;
         }
-    }
-    
-    @Override
-    public Inventory getInventory() {
-        Inventory inventory = getInventory(27, "Shulker Box");
-        ItemStack[] originalContents = getContents();
-        inventory.setContents(originalContents.clone());
-        return inventory;
-    }
-    
-    @Override
-    public void onValidClose(InventoryCloseEvent e) {
-        Inventory inventory = e.getInventory();
-        ItemStack[] contents = inventory.getContents();
-        setContents(contents);
     }
     
     private ItemStack[] getContents() {
