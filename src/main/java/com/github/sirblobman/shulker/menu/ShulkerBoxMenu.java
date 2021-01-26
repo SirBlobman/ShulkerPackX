@@ -1,11 +1,8 @@
-package com.SirBlobman.shulker.menu;
+package com.github.sirblobman.shulker.menu;
 
 import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
-
-import com.SirBlobman.api.menu.AdvancedAbstractMenu;
-import com.SirBlobman.shulker.ShulkerPlugin;
 
 import org.bukkit.block.BlockState;
 import org.bukkit.block.ShulkerBox;
@@ -18,6 +15,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import com.github.sirblobman.api.menu.AdvancedAbstractMenu;
+import com.github.sirblobman.shulker.ShulkerPlugin;
 
 public class ShulkerBoxMenu extends AdvancedAbstractMenu<ShulkerPlugin> {
     private final ItemStack shulkerBoxItem;
