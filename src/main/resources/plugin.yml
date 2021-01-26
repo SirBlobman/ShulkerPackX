@@ -6,5 +6,8 @@ main: "${bukkit.plugin.main}"
 version: "${bukkit.plugin.version}"
 api-version: "1.13"
 
+depend:
+  - "SirBlobmanCore"
+
 authors:
   - "${bukkit.plugin.author}"

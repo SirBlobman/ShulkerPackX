@@ -22,7 +22,7 @@
         <bukkit.plugin.description>${project.description}</bukkit.plugin.description>
         
         <bukkit.plugin.main>${project.groupId}.${project.artifactId}.ShulkerPlugin</bukkit.plugin.main>
-        <bukkit.plugin.version>1.2.0</bukkit.plugin.version>
+        <bukkit.plugin.version>1.2.1</bukkit.plugin.version>
         <bukkit.plugin.author>SirBlobman</bukkit.plugin.author>
     </properties>
     
