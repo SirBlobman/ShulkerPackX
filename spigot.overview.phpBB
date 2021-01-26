@@ -1,8 +1,13 @@
 [SIZE=5][B]Supported Spigot Versions:[/B][/SIZE]
-1.11.2, 1.12.2, 1.13.2, 1.14.4, 1.15.2, 1.16.4
+1.11.2, 1.12.2, 1.13.2, 1.14.4, 1.15.2, 1.16.5
 
 [SIZE=5][COLOR=#FF0000][B]Description:[/B][/COLOR][/SIZE]
 ShulkerPackX is a simple plugin that allows you to open a shulker box without placing it on the ground.
+
+[SIZE=5][B][COLOR=#FF0000]Dependencies:[/COLOR][/B][/SIZE]
+[LIST]
+[*][URL='https://www.spigotmc.org/resources/83189/']SirBlobmanCore[/URL]
+[/LIST]
 
 [SIZE=5][COLOR=#FF0000][B]Features:[/B][/COLOR][/SIZE]
 [LIST]
