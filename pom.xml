@@ -56,7 +56,21 @@
             <version>2.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-    </dependencies>
+    </dependencies>    
+    
+    <distributionManagement>
+        <!-- SirBlobman Releases -->
+        <repository>
+            <id>sirblobman-releases</id>
+            <url>https://nexus.sirblobman.xyz/repository/maven-releases/</url>
+        </repository>
+        
+        <!-- SirBlobman Snapshots -->
+        <snapshotRepository>
+            <id>sirblobman-snapshots</id>
+            <url>https://nexus.sirblobman.xyz/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
     
     <build>
         <finalName>${bukkit.plugin.name}-${bukkit.plugin.version}</finalName>
