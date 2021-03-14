@@ -32,11 +32,11 @@
 			<id>spigot-repo</id>
 			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
 		</repository>
-
-        <!-- CodeMC Repository -->
+        
+        <!-- SirBlobman Public Repository -->
         <repository>
-            <id>codemc-public</id>
-            <url>https://repo.codemc.io/repository/maven-public/</url>
+            <id>sirblobman-public</id>
+            <url>https://nexus.sirblobman.xyz/repository/public/</url>
         </repository>
     </repositories>
     
@@ -61,14 +61,14 @@
     <distributionManagement>
         <!-- SirBlobman Releases -->
         <repository>
-            <id>sirblobman-releases</id>
-            <url>https://nexus.sirblobman.xyz/repository/maven-releases/</url>
+            <id>sb-public-releases</id>
+            <url>https://nexus.sirblobman.xyz/repository/public-releases/</url>
         </repository>
         
         <!-- SirBlobman Snapshots -->
         <snapshotRepository>
-            <id>sirblobman-snapshots</id>
-            <url>https://nexus.sirblobman.xyz/repository/maven-snapshots/</url>
+            <id>sb-public-snapshots</id>
+            <url>https://nexus.sirblobman.xyz/repository/public-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
     
