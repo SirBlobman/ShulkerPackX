@@ -12,8 +12,7 @@ ShulkerPackX is a simple plugin that allows you to open a shulker box without pl
 [SIZE=5][COLOR=#FF0000][B]Features:[/B][/COLOR][/SIZE]
 [LIST]
 [*]Prevent placing shulker box blocks by opening them instead
-
-[*]Creative bypass by sneaking.
+[*]Permission bypass by sneaking (shulkerpackx.shift.place).
 [*]Drag-and-drop installation (no configuration).
 [/LIST]
 

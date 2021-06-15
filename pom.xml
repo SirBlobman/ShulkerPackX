@@ -8,7 +8,7 @@
     
     <name>ShulkerPackX</name>
     <description>A simple plugin that allows you to open shulker boxes without placing them.</description>
-    <url>https://www.spigotmc.org/threads/453225/</url>
+    <url>https://www.spigotmc.org/resources/81793/</url>
     
     <properties>
         <java.version>1.8</java.version>
@@ -23,7 +23,7 @@
         <bukkit.plugin.description>${project.description}</bukkit.plugin.description>
         
         <bukkit.plugin.main>com.github.sirblobman.shulker.ShulkerPlugin</bukkit.plugin.main>
-        <bukkit.plugin.version>1.3.0</bukkit.plugin.version>
+        <bukkit.plugin.version>1.3.1</bukkit.plugin.version>
     </properties>
     
     <repositories>
