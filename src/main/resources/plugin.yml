@@ -1,6 +1,7 @@
 name: "${bukkit.plugin.name}"
 prefix: "${bukkit.plugin.prefix}"
 description: "${bukkit.plugin.description}"
+website: "${project.url}"
 
 main: "${bukkit.plugin.main}"
 version: "${bukkit.plugin.version}"
@@ -11,3 +12,8 @@ depend:
 
 authors:
   - "${bukkit.plugin.author}"
+
+permissions:
+  shulkerpackx.shift.place:
+    description: "Allow a player to place a shulker box when they are sneaking."
+    default: op

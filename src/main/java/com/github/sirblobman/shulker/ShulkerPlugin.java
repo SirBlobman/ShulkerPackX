@@ -1,7 +1,6 @@
 package com.github.sirblobman.shulker;
 
 import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.entity.Player;
@@ -28,7 +27,7 @@ public class ShulkerPlugin extends JavaPlugin implements Listener {
         manager.registerEvents(this, this);
     }
     
-    @EventHandler(priority=EventPriority.HIGHEST)
+    @EventHandler(priority=EventPriority.NORMAL)
     public void onRightClick(PlayerInteractEvent e) {
         Action action = e.getAction();
         if(action != Action.RIGHT_CLICK_AIR && action != Action.RIGHT_CLICK_BLOCK) return;
@@ -40,9 +39,8 @@ public class ShulkerPlugin extends JavaPlugin implements Listener {
         if(result == Result.DENY) return;
     
         Player player = e.getPlayer();
-        if(player.isSneaking()) {
-            GameMode gameMode = player.getGameMode();
-            if(gameMode == GameMode.CREATIVE) return;
+        if(player.isSneaking() && player.hasPermission("shulkerpackx.shift.place")) {
+            return;
         }
         
         PlayerInventory playerInventory = player.getInventory();
@@ -58,6 +56,7 @@ public class ShulkerPlugin extends JavaPlugin implements Listener {
         
         e.setUseItemInHand(Result.DENY);
         e.setUseInteractedBlock(Result.DENY);
+
         ShulkerBoxMenu shulkerBoxMenu = new ShulkerBoxMenu(this, player, item);
         shulkerBoxMenu.open();
     }

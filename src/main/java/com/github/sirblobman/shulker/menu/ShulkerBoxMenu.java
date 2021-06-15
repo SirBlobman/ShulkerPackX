@@ -21,6 +21,7 @@ import com.github.sirblobman.shulker.ShulkerPlugin;
 
 public class ShulkerBoxMenu extends AdvancedAbstractMenu<ShulkerPlugin> {
     private final ItemStack shulkerBoxItem;
+
     public ShulkerBoxMenu(ShulkerPlugin plugin, Player player, ItemStack shulkerBoxItem) {
         super(plugin, player);
         this.shulkerBoxItem = Objects.requireNonNull(shulkerBoxItem, "shulkerBoxItem must not be null!");
