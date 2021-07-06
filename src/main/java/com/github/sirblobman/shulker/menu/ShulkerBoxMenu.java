@@ -2,7 +2,6 @@ package com.github.sirblobman.shulker.menu;
 
 import java.util.Collection;
 import java.util.Map;
-import java.util.Objects;
 
 import org.bukkit.block.BlockState;
 import org.bukkit.block.ShulkerBox;
@@ -17,15 +16,19 @@ import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.github.sirblobman.api.menu.AdvancedAbstractMenu;
+import com.github.sirblobman.api.utility.Validate;
 import com.github.sirblobman.shulker.ShulkerPlugin;
 
-public class ShulkerBoxMenu extends AdvancedAbstractMenu<ShulkerPlugin> {
+public final class ShulkerBoxMenu extends AdvancedAbstractMenu<ShulkerPlugin> {
     private final ItemStack shulkerBoxItem;
 
     public ShulkerBoxMenu(ShulkerPlugin plugin, Player player, ItemStack shulkerBoxItem) {
         super(plugin, player);
-        this.shulkerBoxItem = Objects.requireNonNull(shulkerBoxItem, "shulkerBoxItem must not be null!");
-        if(!isShulkerBox(this.shulkerBoxItem)) throw new IllegalArgumentException("shulkerBoxItem must be a shulker box!");
+        this.shulkerBoxItem = Validate.notNull(shulkerBoxItem, "shulkerBoxItem must not be null!");
+
+        if(!isShulkerBox(this.shulkerBoxItem)) {
+            throw new IllegalArgumentException("shulkerBoxItem must be a shulker box!");
+        }
     }
 
     @Override
@@ -74,8 +77,8 @@ public class ShulkerBoxMenu extends AdvancedAbstractMenu<ShulkerPlugin> {
     }
     
     private ItemStack[] getContents() {
-        ItemMeta meta = shulkerBoxItem.getItemMeta();
-        BlockStateMeta blockStateMeta = (BlockStateMeta) meta;
+        ItemMeta itemMeta = this.shulkerBoxItem.getItemMeta();
+        BlockStateMeta blockStateMeta = (BlockStateMeta) itemMeta;
         BlockState blockState = blockStateMeta.getBlockState();
         
         ShulkerBox shulkerBox = (ShulkerBox) blockState;
