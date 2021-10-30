@@ -6,6 +6,7 @@ import java.util.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.ShulkerBox;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -49,7 +50,8 @@ public final class ShulkerBoxMenu extends AdvancedAbstractMenu<ShulkerPlugin> {
         setContents(contents);
     
         ItemStack item = getShulkerBoxItem();
-        ShulkerBoxPostCloseEvent event = new ShulkerBoxPostCloseEvent(item);
+        HumanEntity humanEntity = e.getPlayer();
+        ShulkerBoxPostCloseEvent event = new ShulkerBoxPostCloseEvent(humanEntity, item);
         Bukkit.getPluginManager().callEvent(event);
     }
     

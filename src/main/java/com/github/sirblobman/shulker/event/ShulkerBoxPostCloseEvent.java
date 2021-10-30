@@ -1,5 +1,6 @@
 package com.github.sirblobman.shulker.event;
 
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
@@ -26,10 +27,16 @@ public final class ShulkerBoxPostCloseEvent extends Event {
         return getHandlerList();
     }
     
+    private final HumanEntity humanEntity;
     private final ItemStack shulkerBoxItem;
     
-    public ShulkerBoxPostCloseEvent(ItemStack shulkerBoxItem) {
+    public ShulkerBoxPostCloseEvent(HumanEntity humanEntity, ItemStack shulkerBoxItem) {
+        this.humanEntity = Validate.notNull(humanEntity, "humanEntity must not be null!");
         this.shulkerBoxItem = Validate.notNull(shulkerBoxItem, "shulkerBoxItem must not be null!");
+    }
+    
+    public HumanEntity getHumanEntity() {
+        return this.humanEntity;
     }
     
     public ItemStack getShulkerBoxItem() {
