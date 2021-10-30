@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" ?>
 <project>
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
@@ -53,7 +54,7 @@
         <dependency>
             <groupId>com.github.sirblobman.api</groupId>
             <artifactId>core</artifactId>
-            <version>2.2-SNAPSHOT</version>
+            <version>2.3-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>    

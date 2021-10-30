@@ -30,10 +30,14 @@ public final class ListenerMenu extends PluginListener<ShulkerPlugin> {
     @EventHandler(priority=EventPriority.NORMAL)
     public void onInteract(PlayerInteractEvent e) {
         EquipmentSlot hand = e.getHand();
-        if(hand != EquipmentSlot.HAND) return;
+        if(hand != EquipmentSlot.HAND) {
+            return;
+        }
 
         Result useItemResult = e.useItemInHand();
-        if(useItemResult == Result.DENY) return;
+        if(useItemResult == Result.DENY) {
+            return;
+        }
 
         Action action = e.getAction();
         if(action != Action.RIGHT_CLICK_AIR && action != Action.RIGHT_CLICK_BLOCK) {
@@ -47,14 +51,20 @@ public final class ListenerMenu extends PluginListener<ShulkerPlugin> {
 
         PlayerInventory playerInventory = player.getInventory();
         ItemStack item = playerInventory.getItemInMainHand();
-        if(item == null) return;
+        if(item == null) {
+            return;
+        }
 
-        ItemMeta meta = item.getItemMeta();
-        if(!(meta instanceof BlockStateMeta)) return;
-        BlockStateMeta blockStateMeta = (BlockStateMeta) meta;
-
+        ItemMeta itemMeta = item.getItemMeta();
+        if(!(itemMeta instanceof BlockStateMeta)) {
+            return;
+        }
+        
+        BlockStateMeta blockStateMeta = (BlockStateMeta) itemMeta;
         BlockState blockState = blockStateMeta.getBlockState();
-        if(!(blockState instanceof ShulkerBox)) return;
+        if(!(blockState instanceof ShulkerBox)) {
+            return;
+        }
 
         e.setUseItemInHand(Result.DENY);
         e.setUseInteractedBlock(Result.DENY);
