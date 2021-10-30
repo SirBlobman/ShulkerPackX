@@ -26,35 +26,35 @@ public final class ListenerMenu extends PluginListener<ShulkerPlugin> {
     public ListenerMenu(ShulkerPlugin plugin) {
         super(plugin);
     }
-
-    @EventHandler(priority=EventPriority.NORMAL)
+    
+    @EventHandler(priority = EventPriority.NORMAL)
     public void onInteract(PlayerInteractEvent e) {
         EquipmentSlot hand = e.getHand();
         if(hand != EquipmentSlot.HAND) {
             return;
         }
-
+        
         Result useItemResult = e.useItemInHand();
         if(useItemResult == Result.DENY) {
             return;
         }
-
+        
         Action action = e.getAction();
         if(action != Action.RIGHT_CLICK_AIR && action != Action.RIGHT_CLICK_BLOCK) {
             return;
         }
-
+        
         Player player = e.getPlayer();
         if(player.isSneaking() && player.hasPermission("shulkerpackx.shift.place")) {
             return;
         }
-
+        
         PlayerInventory playerInventory = player.getInventory();
         ItemStack item = playerInventory.getItemInMainHand();
         if(item == null) {
             return;
         }
-
+        
         ItemMeta itemMeta = item.getItemMeta();
         if(!(itemMeta instanceof BlockStateMeta)) {
             return;
@@ -65,21 +65,21 @@ public final class ListenerMenu extends PluginListener<ShulkerPlugin> {
         if(!(blockState instanceof ShulkerBox)) {
             return;
         }
-
+        
         e.setUseItemInHand(Result.DENY);
         e.setUseInteractedBlock(Result.DENY);
-
+        
         ShulkerPlugin plugin = getPlugin();
         ShulkerBoxMenu shulkerBoxMenu = new ShulkerBoxMenu(plugin, player, item);
         shulkerBoxMenu.open();
     }
-
-    @EventHandler(priority=EventPriority.NORMAL, ignoreCancelled=true)
+    
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onDrop(PlayerDropItemEvent e) {
         Player player = e.getPlayer();
         InventoryView openInventoryView = player.getOpenInventory();
         Inventory topInventory = openInventoryView.getTopInventory();
-
+        
         InventoryHolder topInventoryHolder = topInventory.getHolder();
         if(topInventoryHolder instanceof ShulkerBoxMenu) {
             e.setCancelled(true);

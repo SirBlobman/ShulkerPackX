@@ -25,16 +25,16 @@ import com.github.sirblobman.shulker.event.ShulkerBoxPostCloseEvent;
 
 public final class ShulkerBoxMenu extends AdvancedAbstractMenu<ShulkerPlugin> {
     private final ItemStack shulkerBoxItem;
-
+    
     public ShulkerBoxMenu(ShulkerPlugin plugin, Player player, ItemStack shulkerBoxItem) {
         super(plugin, player);
         this.shulkerBoxItem = Validate.notNull(shulkerBoxItem, "shulkerBoxItem must not be null!");
-
+        
         if(!isShulkerBox(this.shulkerBoxItem)) {
             throw new IllegalArgumentException("shulkerBoxItem must be a shulker box!");
         }
     }
-
+    
     @Override
     public Inventory getInventory() {
         Inventory inventory = getInventory(27, "Shulker Box");
@@ -42,13 +42,13 @@ public final class ShulkerBoxMenu extends AdvancedAbstractMenu<ShulkerPlugin> {
         inventory.setContents(originalContents.clone());
         return inventory;
     }
-
+    
     @Override
     public void onValidClose(InventoryCloseEvent e) {
         Inventory inventory = e.getInventory();
         ItemStack[] contents = inventory.getContents();
         setContents(contents);
-    
+        
         ItemStack item = getShulkerBoxItem();
         HumanEntity humanEntity = e.getPlayer();
         ShulkerBoxPostCloseEvent event = new ShulkerBoxPostCloseEvent(humanEntity, item);
@@ -133,7 +133,7 @@ public final class ShulkerBoxMenu extends AdvancedAbstractMenu<ShulkerPlugin> {
         ItemMeta itemMeta = item.getItemMeta();
         BlockStateMeta blockStateMeta = (BlockStateMeta) itemMeta;
         BlockState blockState = blockStateMeta.getBlockState();
-    
+        
         ShulkerBox shulkerBox = (ShulkerBox) blockState;
         Inventory inventory = shulkerBox.getInventory();
         inventory.setContents(contents);
