@@ -16,7 +16,7 @@ public final class ShulkerPlugin extends ConfigurablePlugin {
     @Override
     public void onEnable() {
         new ListenerMenu(this).register();
-        
+
         CorePlugin corePlugin = JavaPlugin.getPlugin(CorePlugin.class);
         UpdateManager updateManager = corePlugin.getUpdateManager();
         updateManager.addResource(this, 81793L);
