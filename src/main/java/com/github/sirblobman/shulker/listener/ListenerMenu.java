@@ -18,7 +18,7 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.github.sirblobman.api.core.listener.PluginListener;
+import com.github.sirblobman.api.plugin.listener.PluginListener;
 import com.github.sirblobman.shulker.ShulkerPlugin;
 import com.github.sirblobman.shulker.menu.ShulkerBoxMenu;
 
