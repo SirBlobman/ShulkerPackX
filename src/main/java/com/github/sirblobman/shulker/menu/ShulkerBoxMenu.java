@@ -2,6 +2,7 @@ package com.github.sirblobman.shulker.menu;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.block.BlockState;
@@ -57,27 +58,48 @@ public final class ShulkerBoxMenu extends AdvancedAbstractMenu<ShulkerPlugin> {
 
     @Override
     public void onValidClick(InventoryClickEvent e) {
+        printDebug("Detected valid InventoryClickEvent.");
+
+        int slot = e.getRawSlot();
+        printDebug("Raw Slot: " + slot);
+
+        if(slot < 0) {
+            printDebug("Slot is less than zero, cancelled event.");
+            e.setCancelled(true);
+        }
+
         Inventory inventory = e.getInventory();
         InventoryType inventoryType = inventory.getType();
         if (inventoryType == InventoryType.PLAYER) {
+            printDebug("inventory type is not player, ignoring.");
             return;
         }
 
-        e.setCancelled(false);
         ItemStack cursorItem = e.getCursor();
         ItemStack currentItem = e.getCurrentItem();
 
         if (isShulkerBox(cursorItem)) {
+            printDebug("Cursor item is shulker box, cancelling.");
             e.setCancelled(true);
         }
 
         if (isShulkerBox(currentItem)) {
+            printDebug("Clicked item is shulker box, cancelling.");
             e.setCancelled(true);
         }
+
+        printDebug("Done checking event.");
     }
 
     @Override
     public void onValidDrag(InventoryDragEvent e) {
+        Set<Integer> rawSlots = e.getRawSlots();
+        for (Integer rawSlot : rawSlots) {
+            if(rawSlot == null || rawSlot < 0) {
+                e.setCancelled(true);
+            }
+        }
+
         Inventory inventory = e.getInventory();
         InventoryType inventoryType = inventory.getType();
         if (inventoryType == InventoryType.PLAYER) {
@@ -143,5 +165,10 @@ public final class ShulkerBoxMenu extends AdvancedAbstractMenu<ShulkerPlugin> {
 
         Player player = getPlayer();
         player.updateInventory();
+    }
+
+    private void printDebug(String message) {
+        ShulkerPlugin plugin = getPlugin();
+        plugin.printDebug(message);
     }
 }

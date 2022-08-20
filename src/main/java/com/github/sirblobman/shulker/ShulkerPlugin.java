@@ -14,11 +14,12 @@ import com.github.sirblobman.shulker.listener.ListenerMenu;
 public final class ShulkerPlugin extends ConfigurablePlugin {
     @Override
     public void onLoad() {
-        // Do Nothing
+        saveDefaultConfig();
     }
 
     @Override
     public void onEnable() {
+        reloadConfig();
         registerListeners();
         registerUpdateChecker();
         registerbStats();
