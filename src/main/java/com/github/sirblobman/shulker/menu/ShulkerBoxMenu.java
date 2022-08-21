@@ -46,12 +46,18 @@ public final class ShulkerBoxMenu extends AdvancedAbstractMenu<ShulkerPlugin> {
 
     @Override
     public void onValidClose(InventoryCloseEvent e) {
+        HumanEntity humanEntity = e.getPlayer();
+        ItemStack cursorItem = humanEntity.getItemOnCursor();
+        if(cursorItem != null) {
+            humanEntity.setItemOnCursor(null);
+            humanEntity.getWorld().dropItemNaturally(humanEntity.getLocation(), cursorItem);
+        }
+
         Inventory inventory = e.getInventory();
         ItemStack[] contents = inventory.getContents();
         setContents(contents);
 
         ItemStack item = getShulkerBoxItem();
-        HumanEntity humanEntity = e.getPlayer();
         ShulkerBoxPostCloseEvent event = new ShulkerBoxPostCloseEvent(humanEntity, item);
         Bukkit.getPluginManager().callEvent(event);
     }
