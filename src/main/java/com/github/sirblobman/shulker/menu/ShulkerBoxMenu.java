@@ -48,7 +48,7 @@ public final class ShulkerBoxMenu extends AdvancedAbstractMenu<ShulkerPlugin> {
     public void onValidClose(InventoryCloseEvent e) {
         HumanEntity humanEntity = e.getPlayer();
         ItemStack cursorItem = humanEntity.getItemOnCursor();
-        if(cursorItem != null) {
+        if(!ItemUtility.isAir(cursorItem)) {
             humanEntity.setItemOnCursor(null);
             humanEntity.getWorld().dropItemNaturally(humanEntity.getLocation(), cursorItem);
         }
