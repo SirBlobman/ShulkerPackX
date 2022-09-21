@@ -9,6 +9,7 @@ import com.github.sirblobman.api.utility.Validate;
 
 /**
  * This event is fired after a custom shulker box menu is closed and saved.
+ *
  * @author SirBlobman
  */
 public final class ShulkerBoxPostCloseEvent extends Event {

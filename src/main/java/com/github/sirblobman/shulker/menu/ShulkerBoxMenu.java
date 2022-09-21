@@ -74,7 +74,7 @@ public final class ShulkerBoxMenu extends AdvancedAbstractMenu<ShulkerPlugin> {
     public Inventory getInventory() {
         Component title = getTitle();
         Inventory inventory = getInventory(27, title);
-        
+
         ItemStack[] originalContents = getContents();
         inventory.setContents(originalContents.clone());
         return inventory;
@@ -84,7 +84,7 @@ public final class ShulkerBoxMenu extends AdvancedAbstractMenu<ShulkerPlugin> {
     public void onValidClose(InventoryCloseEvent e) {
         HumanEntity humanEntity = e.getPlayer();
         ItemStack cursorItem = humanEntity.getItemOnCursor();
-        if(!ItemUtility.isAir(cursorItem)) {
+        if (!ItemUtility.isAir(cursorItem)) {
             humanEntity.setItemOnCursor(null);
             humanEntity.getWorld().dropItemNaturally(humanEntity.getLocation(), cursorItem);
         }
@@ -105,7 +105,7 @@ public final class ShulkerBoxMenu extends AdvancedAbstractMenu<ShulkerPlugin> {
         int slot = e.getRawSlot();
         printDebug("Raw Slot: " + slot);
 
-        if(slot < 0) {
+        if (slot < 0) {
             printDebug("Slot is less than zero, cancelled event.");
             e.setCancelled(true);
         }
@@ -137,7 +137,7 @@ public final class ShulkerBoxMenu extends AdvancedAbstractMenu<ShulkerPlugin> {
     public void onValidDrag(InventoryDragEvent e) {
         Set<Integer> rawSlots = e.getRawSlots();
         for (Integer rawSlot : rawSlots) {
-            if(rawSlot == null || rawSlot < 0) {
+            if (rawSlot == null || rawSlot < 0) {
                 e.setCancelled(true);
             }
         }
