@@ -17,12 +17,20 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitScheduler;
 
+import com.github.sirblobman.api.adventure.adventure.text.Component;
+import com.github.sirblobman.api.language.ComponentHelper;
 import com.github.sirblobman.api.menu.AdvancedAbstractMenu;
+import com.github.sirblobman.api.nms.MultiVersionHandler;
 import com.github.sirblobman.api.utility.ItemUtility;
 import com.github.sirblobman.api.utility.Validate;
+import com.github.sirblobman.api.utility.paper.PaperChecker;
+import com.github.sirblobman.api.utility.paper.PaperHelper;
 import com.github.sirblobman.shulker.ShulkerPlugin;
 import com.github.sirblobman.shulker.event.ShulkerBoxPostCloseEvent;
+
+import org.jetbrains.annotations.Nullable;
 
 public final class ShulkerBoxMenu extends AdvancedAbstractMenu<ShulkerPlugin> {
     private final ItemStack shulkerBoxItem;
@@ -37,8 +45,36 @@ public final class ShulkerBoxMenu extends AdvancedAbstractMenu<ShulkerPlugin> {
     }
 
     @Override
+    public MultiVersionHandler getMultiVersionHandler() {
+        ShulkerPlugin plugin = getPlugin();
+        return plugin.getMultiVersionHandler();
+    }
+
+    @Override
+    public Component getTitle() {
+        Component displayName = getShulkerBoxItemDisplayName();
+        if (displayName != null) {
+            return displayName;
+        }
+
+        return Component.translatable("container.shulkerBox");
+    }
+
+    @Override
+    public void open() {
+        super.open();
+
+        Player player = getPlayer();
+        ShulkerPlugin plugin = getPlugin();
+        BukkitScheduler scheduler = Bukkit.getScheduler();
+        scheduler.runTaskLater(plugin, () -> updateTitle(player), 3L);
+    }
+
+    @Override
     public Inventory getInventory() {
-        Inventory inventory = getInventory(27, "Shulker Box");
+        Component title = getTitle();
+        Inventory inventory = getInventory(27, title);
+        
         ItemStack[] originalContents = getContents();
         inventory.setContents(originalContents.clone());
         return inventory;
@@ -128,6 +164,30 @@ public final class ShulkerBoxMenu extends AdvancedAbstractMenu<ShulkerPlugin> {
 
     private ItemStack getShulkerBoxItem() {
         return this.shulkerBoxItem;
+    }
+
+    @Nullable
+    private Component getShulkerBoxItemDisplayName() {
+        ItemStack item = getShulkerBoxItem();
+        if (ItemUtility.isAir(item)) {
+            return null;
+        }
+
+        ItemMeta itemMeta = item.getItemMeta();
+        if (itemMeta == null) {
+            return null;
+        }
+
+        if (!itemMeta.hasDisplayName()) {
+            return null;
+        }
+
+        if (PaperChecker.hasNativeComponentSupport()) {
+            return PaperHelper.getDisplayName(item);
+        } else {
+            String legacyDisplayName = itemMeta.getDisplayName();
+            return ComponentHelper.toComponent(legacyDisplayName);
+        }
     }
 
     private boolean isShulkerBox(ItemStack item) {

@@ -25,7 +25,7 @@
         <bukkit.plugin.description>${project.description}</bukkit.plugin.description>
 
         <bukkit.plugin.main>com.github.sirblobman.shulker.ShulkerPlugin</bukkit.plugin.main>
-        <bukkit.plugin.version>1.4.1</bukkit.plugin.version>
+        <bukkit.plugin.version>1.5.0-Beta</bukkit.plugin.version>
     </properties>
 
     <repositories>
@@ -43,6 +43,14 @@
     </repositories>
 
     <dependencies>
+        <!-- JetBrains Annotations -->
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>23.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- Spigot API -->
         <dependency>
             <groupId>org.spigotmc</groupId>
@@ -55,7 +63,7 @@
         <dependency>
             <groupId>com.github.sirblobman.api</groupId>
             <artifactId>core</artifactId>
-            <version>2.5-SNAPSHOT</version>
+            <version>2.6-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
