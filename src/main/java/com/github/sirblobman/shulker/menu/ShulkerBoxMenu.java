@@ -17,7 +17,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitScheduler;
 
 import com.github.sirblobman.api.adventure.adventure.text.Component;
 import com.github.sirblobman.api.language.ComponentHelper;
@@ -58,16 +57,6 @@ public final class ShulkerBoxMenu extends AdvancedAbstractMenu<ShulkerPlugin> {
         }
 
         return Component.translatable("container.shulkerBox");
-    }
-
-    @Override
-    public void open() {
-        super.open();
-
-        Player player = getPlayer();
-        ShulkerPlugin plugin = getPlugin();
-        BukkitScheduler scheduler = Bukkit.getScheduler();
-        scheduler.runTaskLater(plugin, () -> updateTitle(player), 3L);
     }
 
     @Override
