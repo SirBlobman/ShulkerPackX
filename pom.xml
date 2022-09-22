@@ -25,7 +25,7 @@
         <bukkit.plugin.description>${project.description}</bukkit.plugin.description>
 
         <bukkit.plugin.main>com.github.sirblobman.shulker.ShulkerPlugin</bukkit.plugin.main>
-        <bukkit.plugin.version>1.5.0-Beta</bukkit.plugin.version>
+        <bukkit.plugin.version>1.5.0</bukkit.plugin.version>
     </properties>
 
     <repositories>
