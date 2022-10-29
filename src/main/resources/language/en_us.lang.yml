@@ -1,0 +1,34 @@
+## Extra Information:
+## This is the default language file for ShulkerPackX.
+## The default language is "en_us", also known as English (United States).
+## Context for translators will be added as YAML comments above the string.
+
+## The color scheme for messages is shulker box purple. (#936793 light, #5a415c dark)
+## Error messages should always be red.
+## Variables in messages are gray.
+
+## Messages use the MiniMessage format in non-strict mode.
+## More information about MiniMessage can be found here:
+## https://docs.adventure.kyori.net/minimessage/format.html
+---
+
+language-name: "en_us"
+decimal-format: "0.00"
+
+error:
+  shop-disabled: "<red>The shop feature is not enabled.</red>"
+  missing-type-access: "<red>You do not have access to that shulker box type.</red>"
+  already-owned: "<red>You already have access to that type of shulker box.</red>"
+  not-enough-money: "<red>You do not have enough money.</red>"
+  economy-error:
+    - "<red>An economy error occurred:</red>"
+    - "<red>{error}</red>"
+
+shop-menu:
+  title: "<color:#5a415c>ShulkerPackX Shop</color>"
+  lore:
+    owned: "<color:#936793>You already have access to this type.</color>"
+    not-owned: "<color:#936793>Click this item to purchase access to this type of shulker box.</color>"
+    price: "<color:#5a415c><bold>Price:</bold></color> <color:#936793>{price}</color>"
+  exit-button: "<red><bold>Exit Shop</bold</red>"
+  purchase-success: "<color:#936793>Successfully purchased access to the {type}.</color>"

@@ -18,8 +18,12 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.github.sirblobman.api.language.LanguageManager;
 import com.github.sirblobman.api.plugin.listener.PluginListener;
+import com.github.sirblobman.api.utility.ItemUtility;
+import com.github.sirblobman.api.xseries.XMaterial;
 import com.github.sirblobman.shulker.ShulkerPlugin;
+import com.github.sirblobman.shulker.manager.ShopAccessManager;
 import com.github.sirblobman.shulker.menu.ShulkerBoxMenu;
 
 public final class ListenerMenu extends PluginListener<ShulkerPlugin> {
@@ -51,7 +55,7 @@ public final class ListenerMenu extends PluginListener<ShulkerPlugin> {
 
         PlayerInventory playerInventory = player.getInventory();
         ItemStack item = playerInventory.getItemInMainHand();
-        if (item == null) {
+        if (ItemUtility.isAir(item)) {
             return;
         }
 
@@ -70,6 +74,16 @@ public final class ListenerMenu extends PluginListener<ShulkerPlugin> {
         e.setUseInteractedBlock(Result.DENY);
 
         ShulkerPlugin plugin = getPlugin();
+        if (plugin.isShopEnabled()) {
+            XMaterial material = XMaterial.matchXMaterial(item);
+            ShopAccessManager shopAccessManager = plugin.getShopAccessManager();
+            if (!shopAccessManager.hasAccess(player, material)) {
+                LanguageManager languageManager = plugin.getLanguageManager();
+                languageManager.sendMessage(player, "error.missing-type-access", null);
+                return;
+            }
+        }
+
         ShulkerBoxMenu shulkerBoxMenu = new ShulkerBoxMenu(plugin, player, item);
         shulkerBoxMenu.open();
     }

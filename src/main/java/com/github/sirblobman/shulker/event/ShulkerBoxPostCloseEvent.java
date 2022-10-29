@@ -7,6 +7,8 @@ import org.bukkit.inventory.ItemStack;
 
 import com.github.sirblobman.api.utility.Validate;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * This event is fired after a custom shulker box menu is closed and saved.
  *
@@ -32,7 +34,7 @@ public final class ShulkerBoxPostCloseEvent extends Event {
     }
 
     @Override
-    public HandlerList getHandlers() {
+    public @NotNull HandlerList getHandlers() {
         return getHandlerList();
     }
 

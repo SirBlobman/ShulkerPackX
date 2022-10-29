@@ -42,25 +42,26 @@ dependencies {
     compileOnly("org.jetbrains:annotations:23.0.0")
     compileOnly("org.spigotmc:spigot-api:$spigotVersion")
     compileOnly("com.github.sirblobman.api:core:2.6-SNAPSHOT")
+    compileOnly("net.milkbowl.vault:VaultAPI:1.7")
 }
 
 tasks {
     processResources {
-        filesMatching("plugin.yml") {
-            val bukkitPluginName = findProperty("bukkit.plugin.name") ?: ""
-            val bukkitPluginPrefix = findProperty("bukkit.plugin.prefix") ?: ""
-            val bukkitPluginDescription = findProperty("bukkit.plugin.description") ?: ""
-            val bukkitPluginWebsite = findProperty("bukkit.plugin.website") ?: ""
-            val bukkitPluginMain = findProperty("bukkit.plugin.main") ?: ""
+        val pluginName = (findProperty("bukkit.plugin.name") ?: "") as String
+        val pluginPrefix = (findProperty("bukkit.plugin.prefix") ?: "") as String
+        val pluginDescription = (findProperty("bukkit.plugin.description") ?: "") as String
+        val pluginWebsite = (findProperty("bukkit.plugin.website") ?: "") as String
+        val pluginMainClass = (findProperty("bukkit.plugin.main") ?: "") as String
 
-            filter<org.apache.tools.ant.filters.ReplaceTokens>("tokens" to mapOf(
-                "bukkit.plugin.name" to bukkitPluginName,
-                "bukkit.plugin.prefix" to bukkitPluginPrefix,
-                "bukkit.plugin.description" to bukkitPluginDescription,
-                "bukkit.plugin.website" to bukkitPluginWebsite,
-                "bukkit.plugin.main" to bukkitPluginMain,
-                "bukkit.plugin.version" to calculatedVersion,
-            ))
+        filesMatching("plugin.yml") {
+            filter {
+                it.replace("\${bukkit.plugin.name}", pluginName)
+                    .replace("\${bukkit.plugin.prefix}", pluginPrefix)
+                    .replace("\${bukkit.plugin.description}", pluginDescription)
+                    .replace("\${bukkit.plugin.website}", pluginWebsite)
+                    .replace("\${bukkit.plugin.version}", calculatedVersion)
+                    .replace("\${bukkit.plugin.main}", pluginMainClass)
+            }
         }
     }
 }
