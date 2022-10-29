@@ -1,17 +1,31 @@
-name: "@bukkit.plugin.name@"
-prefix: "@bukkit.plugin.prefix@"
-description: "@bukkit.plugin.description@"
-website: "@bukkit.plugin.website@"
+name: "${bukkit.plugin.name}"
+prefix: "${bukkit.plugin.prefix}"
+description: "${bukkit.plugin.description}"
+website: "${bukkit.plugin.website}"
 
-main: "@bukkit.plugin.main@"
-version: "@bukkit.plugin.version@"
-api-version: "1.13"
+main: "${bukkit.plugin.main}"
+version: "${bukkit.plugin.version}"
+api-version: "1.14"
 
 authors:
   - "SirBlobman"
 
 depend:
   - "BlueSlimeCore"
+
+softdepend:
+  - "Vault"
+
+commands:
+  shulker-shop:
+    description: "Open the shulker shop menu."
+    usage: "/<command>"
+    aliases:
+      - "shulkershop"
+      - "sshop"
+      - "shulkshop"
+      - "spx-shop"
+      - "spxshop"
 
 permissions:
   shulkerpackx.shift.place:
