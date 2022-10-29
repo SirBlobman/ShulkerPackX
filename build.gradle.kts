@@ -47,6 +47,10 @@ dependencies {
 }
 
 tasks {
+    named<Jar>("jar") {
+        archiveFileName.set("ShulkerPackX-$calculatedVersion.jar")
+    }
+
     processResources {
         val pluginName = (findProperty("bukkit.plugin.name") ?: "") as String
         val pluginPrefix = (findProperty("bukkit.plugin.prefix") ?: "") as String
