@@ -12,6 +12,7 @@ val calculatedVersion = "$baseVersion.$betaVersionPart$jenkinsBuildNumber"
 
 plugins {
     id("java")
+    id("maven-publish")
 }
 
 java {
@@ -62,6 +63,32 @@ tasks {
                     .replace("\${bukkit.plugin.version}", calculatedVersion)
                     .replace("\${bukkit.plugin.main}", pluginMainClass)
             }
+        }
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "sirblobman-public"
+            url = uri("https://nexus.sirblobman.xyz/repository/public-snapshots/")
+
+            credentials {
+                val currentUsername = System.getenv("MAVEN_DEPLOY_USERNAME") ?: findProperty("mavenUsernameSirBlobman") ?: ""
+                val currentPassword = System.getenv("MAVEN_DEPLOY_PASSWORD") ?: findProperty("mavenPasswordSirBlobman") ?: ""
+
+                username = currentUsername as String
+                password = currentPassword as String
+            }
+        }
+    }
+
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = "com.github.sirblobman.plugin"
+            artifactId = "ShulkerPackX"
+            version = "1.0.0-SNAPSHOT"
+            artifact(tasks["jar"])
         }
     }
 }
