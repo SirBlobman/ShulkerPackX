@@ -29,6 +29,7 @@ import com.github.sirblobman.api.utility.paper.PaperHelper;
 import com.github.sirblobman.shulker.ShulkerPlugin;
 import com.github.sirblobman.shulker.event.ShulkerBoxPostCloseEvent;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public final class ShulkerBoxMenu extends AdvancedAbstractMenu<ShulkerPlugin> {
@@ -60,7 +61,7 @@ public final class ShulkerBoxMenu extends AdvancedAbstractMenu<ShulkerPlugin> {
     }
 
     @Override
-    public Inventory getInventory() {
+    public @NotNull Inventory getInventory() {
         Component title = getTitle();
         Inventory inventory = getInventory(27, title);
 
@@ -197,6 +198,10 @@ public final class ShulkerBoxMenu extends AdvancedAbstractMenu<ShulkerPlugin> {
     private ItemStack[] getContents() {
         ItemStack item = getShulkerBoxItem();
         ItemMeta itemMeta = item.getItemMeta();
+        if (itemMeta == null) {
+            throw new IllegalStateException("null item meta!");
+        }
+
         BlockStateMeta blockStateMeta = (BlockStateMeta) itemMeta;
         BlockState blockState = blockStateMeta.getBlockState();
 
@@ -208,6 +213,10 @@ public final class ShulkerBoxMenu extends AdvancedAbstractMenu<ShulkerPlugin> {
     private void setContents(ItemStack[] contents) {
         ItemStack item = getShulkerBoxItem();
         ItemMeta itemMeta = item.getItemMeta();
+        if (itemMeta == null) {
+            throw new IllegalStateException("null item meta!");
+        }
+
         BlockStateMeta blockStateMeta = (BlockStateMeta) itemMeta;
         BlockState blockState = blockStateMeta.getBlockState();
 

@@ -16,6 +16,7 @@ import com.github.sirblobman.api.language.Language;
 import com.github.sirblobman.api.language.LanguageManager;
 import com.github.sirblobman.api.plugin.ConfigurablePlugin;
 import com.github.sirblobman.api.update.UpdateManager;
+import com.github.sirblobman.shulker.command.CommandShulkerPackShop;
 import com.github.sirblobman.shulker.manager.VaultManager;
 import com.github.sirblobman.shulker.listener.ListenerMenu;
 import com.github.sirblobman.shulker.manager.ShopAccessManager;
@@ -43,6 +44,7 @@ public final class ShulkerPlugin extends ConfigurablePlugin {
     @Override
     public void onEnable() {
         reloadConfig();
+        registerCommands();
         registerListeners();
         registerUpdateChecker();
         registerbStats();
@@ -105,6 +107,10 @@ public final class ShulkerPlugin extends ConfigurablePlugin {
 
         this.hookVault = new VaultManager(this);
         return this.hookVault.setupEconomy();
+    }
+
+    private void registerCommands() {
+        new CommandShulkerPackShop(this).register();
     }
 
     private void registerListeners() {

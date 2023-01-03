@@ -74,5 +74,9 @@ public final class ShopAccessManager {
         NamespacedKey materialKey = bukkitMaterial.getKey();
         PersistentDataContainer shopAccessContainer = getShopAccessContainer(player);
         shopAccessContainer.set(materialKey, PersistentDataType.BYTE, (byte) 1);
+
+        PersistentDataContainer dataContainer = player.getPersistentDataContainer();
+        dataContainer.set(getShopAccessKey(), PersistentDataType.TAG_CONTAINER, shopAccessContainer);
+        plugin.printDebug("Set material key '" + materialKey + "' to '1' for player '" + player + "'.");
     }
 }
