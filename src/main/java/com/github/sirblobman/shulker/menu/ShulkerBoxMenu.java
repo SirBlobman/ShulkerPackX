@@ -95,6 +95,12 @@ public final class ShulkerBoxMenu extends AdvancedAbstractMenu<ShulkerPlugin> {
         int slot = e.getRawSlot();
         printDebug("Raw Slot: " + slot);
 
+        int hotbarButton = e.getHotbarButton();
+        if (hotbarButton != -1) {
+            printDebug("Hotbar buttons not supported.");
+            e.setCancelled(true);
+        }
+
         if (slot < 0) {
             printDebug("Slot is less than zero, cancelled event.");
             e.setCancelled(true);
