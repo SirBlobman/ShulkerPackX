@@ -30,5 +30,5 @@ shop-menu:
     owned: "<color:#936793>You already have access to this type.</color>"
     not-owned: "<color:#936793>Click this item to purchase access to this type of shulker box.</color>"
     price: "<color:#5a415c><bold>Price:</bold></color> <color:#936793>{price}</color>"
-  exit-button: "<red><bold>Exit Shop</bold</red>"
+  exit-button: "<red><bold>Exit Shop</bold></red>"
   purchase-success: "<color:#936793>Successfully purchased access to the {type}.</color>"
