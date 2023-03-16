@@ -44,10 +44,14 @@ public final class ShulkerPlugin extends ConfigurablePlugin {
     @Override
     public void onEnable() {
         reloadConfig();
+
+        LanguageManager languageManager = getLanguageManager();
+        languageManager.onPluginEnable();
+
         registerCommands();
         registerListeners();
         registerUpdateChecker();
-        registerbStats();
+        register_bStats();
     }
 
     @Override
@@ -61,7 +65,7 @@ public final class ShulkerPlugin extends ConfigurablePlugin {
         configurationManager.reload("config.yml");
 
         LanguageManager languageManager = getLanguageManager();
-        languageManager.reloadLanguageFiles();
+        languageManager.reloadLanguages();
 
         if (isShopEnabled() && !setupVault()) {
             Logger logger = getLogger();
@@ -123,7 +127,7 @@ public final class ShulkerPlugin extends ConfigurablePlugin {
         updateManager.addResource(this, 81793L);
     }
 
-    private void registerbStats() {
+    private void register_bStats() {
         Metrics metrics = new Metrics(this, 16178);
         SimplePie languagePie = new SimplePie("selected_language", this::getDefaultLanguageCode);
         metrics.addCustomChart(languagePie);
@@ -136,6 +140,6 @@ public final class ShulkerPlugin extends ConfigurablePlugin {
             return "none";
         }
 
-        return defaultLanguage.getLanguageCode();
+        return defaultLanguage.getLanguageName();
     }
 }

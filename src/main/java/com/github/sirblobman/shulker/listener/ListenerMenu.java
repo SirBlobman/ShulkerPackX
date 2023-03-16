@@ -79,7 +79,7 @@ public final class ListenerMenu extends PluginListener<ShulkerPlugin> {
             ShopAccessManager shopAccessManager = plugin.getShopAccessManager();
             if (!shopAccessManager.hasAccess(player, material)) {
                 LanguageManager languageManager = plugin.getLanguageManager();
-                languageManager.sendMessage(player, "error.missing-type-access", null);
+                languageManager.sendMessage(player, "error.missing-type-access");
                 return;
             }
         }

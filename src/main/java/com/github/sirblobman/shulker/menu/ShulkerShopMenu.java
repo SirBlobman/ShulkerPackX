@@ -11,17 +11,17 @@ import com.github.sirblobman.api.adventure.adventure.text.Component;
 import com.github.sirblobman.api.item.ItemBuilder;
 import com.github.sirblobman.api.language.ComponentHelper;
 import com.github.sirblobman.api.language.LanguageManager;
-import com.github.sirblobman.api.language.Replacer;
-import com.github.sirblobman.api.language.SimpleReplacer;
+import com.github.sirblobman.api.language.replacer.Replacer;
+import com.github.sirblobman.api.language.replacer.StringReplacer;
 import com.github.sirblobman.api.menu.AbstractMenu;
 import com.github.sirblobman.api.menu.button.AbstractButton;
 import com.github.sirblobman.api.menu.button.ExitButton;
 import com.github.sirblobman.api.nms.ItemHandler;
 import com.github.sirblobman.api.nms.MultiVersionHandler;
 import com.github.sirblobman.api.xseries.XMaterial;
-import com.github.sirblobman.shulker.manager.VaultManager;
 import com.github.sirblobman.shulker.ShulkerPlugin;
 import com.github.sirblobman.shulker.manager.ShopAccessManager;
+import com.github.sirblobman.shulker.manager.VaultManager;
 import com.github.sirblobman.shulker.menu.button.PurchaseShulkerBoxButton;
 
 import net.milkbowl.vault.economy.Economy;
@@ -100,7 +100,7 @@ public final class ShulkerShopMenu extends AbstractMenu {
     public @NotNull Component getTitle() {
         Player player = getPlayer();
         LanguageManager languageManager = getLanguageManager();
-        return languageManager.getMessage(player, "shop-menu.title", null);
+        return languageManager.getMessage(player, "shop-menu.title");
     }
 
     @Override
@@ -122,7 +122,7 @@ public final class ShulkerShopMenu extends AbstractMenu {
 
         Player player = getPlayer();
         if (shopAccessManager.hasAccess(player, material)) {
-            Component loreLine = languageManager.getMessage(player, "shop-menu.lore.owned", null);
+            Component loreLine = languageManager.getMessage(player, "shop-menu.lore.owned");
             builder.withLore(itemHandler, ComponentHelper.wrapNoItalics(loreLine));
             return builder.build();
         }
@@ -133,9 +133,9 @@ public final class ShulkerShopMenu extends AbstractMenu {
         VaultManager hookVault = plugin.getHookVault();
         Economy economyHandler = hookVault.getEconomy();
         String priceFormatted = economyHandler.format(price);
-        Replacer priceReplacer = new SimpleReplacer("{price}", priceFormatted);
+        Replacer priceReplacer = new StringReplacer("{price}", priceFormatted);
 
-        Component line1 = languageManager.getMessage(player, "shop-menu.lore.not-owned", null);
+        Component line1 = languageManager.getMessage(player, "shop-menu.lore.not-owned");
         Component line2 = languageManager.getMessage(player, "shop-menu.lore.price", priceReplacer);
         List<Component> lore = Arrays.asList(line1, line2);
 
@@ -149,7 +149,7 @@ public final class ShulkerShopMenu extends AbstractMenu {
 
         Player player = getPlayer();
         LanguageManager languageManager = getLanguageManager();
-        Component displayName = languageManager.getMessage(player, "shop-menu.exit-button", null);
+        Component displayName = languageManager.getMessage(player, "shop-menu.exit-button");
 
         ItemBuilder builder = new ItemBuilder(XMaterial.BARRIER);
         builder.withName(itemHandler, ComponentHelper.wrapNoItalics(displayName));

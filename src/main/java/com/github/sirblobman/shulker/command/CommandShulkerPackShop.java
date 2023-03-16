@@ -25,7 +25,7 @@ public final class CommandShulkerPackShop extends PlayerCommand {
     @Override
     protected boolean execute(Player player, String[] strings) {
         if (!this.plugin.isShopEnabled()) {
-            sendMessage(player, "error.shop-disabled", null);
+            sendMessage(player, "error.shop-disabled");
             return true;
         }
 

@@ -11,8 +11,8 @@ import com.github.sirblobman.api.adventure.adventure.text.Component;
 import com.github.sirblobman.api.adventure.adventure.text.TextReplacementConfig;
 import com.github.sirblobman.api.language.ComponentHelper;
 import com.github.sirblobman.api.language.LanguageManager;
-import com.github.sirblobman.api.language.Replacer;
-import com.github.sirblobman.api.language.SimpleReplacer;
+import com.github.sirblobman.api.language.replacer.Replacer;
+import com.github.sirblobman.api.language.replacer.StringReplacer;
 import com.github.sirblobman.api.menu.button.QuickButton;
 import com.github.sirblobman.api.nms.ItemHandler;
 import com.github.sirblobman.api.nms.MultiVersionHandler;
@@ -21,9 +21,9 @@ import com.github.sirblobman.api.utility.Validate;
 import com.github.sirblobman.api.utility.paper.PaperChecker;
 import com.github.sirblobman.api.utility.paper.PaperHelper;
 import com.github.sirblobman.api.xseries.XMaterial;
-import com.github.sirblobman.shulker.manager.VaultManager;
 import com.github.sirblobman.shulker.ShulkerPlugin;
 import com.github.sirblobman.shulker.manager.ShopAccessManager;
+import com.github.sirblobman.shulker.manager.VaultManager;
 
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
@@ -70,14 +70,14 @@ public final class PurchaseShulkerBoxButton extends QuickButton {
         Economy economy = hookVault.getEconomy();
         double balance = economy.getBalance(player);
         if (balance < price) {
-            languageManager.sendMessage(player, "error.not-enough-money", null);
+            languageManager.sendMessage(player, "error.not-enough-money");
             closeMenu(player);
             return;
         }
 
         EconomyResponse economyResponse = economy.withdrawPlayer(player, price);
         if (!economyResponse.transactionSuccess()) {
-            Replacer replacer = new SimpleReplacer("{error}", economyResponse.errorMessage);
+            Replacer replacer = new StringReplacer("{error}", economyResponse.errorMessage);
             languageManager.sendMessage(player, "error.economy-error", replacer);
             closeMenu(player);
             return;
@@ -97,7 +97,7 @@ public final class PurchaseShulkerBoxButton extends QuickButton {
     private void sendPurchaseSuccessfulMessage(Player player, XMaterial material) {
         ShulkerPlugin plugin = getPlugin();
         LanguageManager languageManager = plugin.getLanguageManager();
-        Component preMessage = languageManager.getMessage(player, "shop-menu.purchase-success", null);
+        Component preMessage = languageManager.getMessage(player, "shop-menu.purchase-success");
 
         Component message = replaceDisplayName(preMessage, material);
         languageManager.sendMessage(player, message);

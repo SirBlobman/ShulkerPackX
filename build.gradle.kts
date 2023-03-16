@@ -22,28 +22,17 @@ java {
 
 repositories {
     mavenCentral()
-
-    maven {
-        name = "spigot-repo"
-        url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
-    }
-
-    maven {
-        name = "oss-sonatype-snapshots"
-        url = uri("https://oss.sonatype.org/content/repositories/snapshots")
-    }
-
-    maven {
-        name = "sirblobman-public"
-        url = uri("https://nexus.sirblobman.xyz/repository/public/")
-    }
+    maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+    maven("https://oss.sonatype.org/content/repositories/snapshots/")
+    maven("https://nexus.sirblobman.xyz/public/")
+    maven("https://nexus.sirblobman.xyz/proxy-jitpack/")
 }
 
 dependencies {
-    compileOnly("org.jetbrains:annotations:23.0.0")
+    compileOnly("org.jetbrains:annotations:24.0.1")
     compileOnly("org.spigotmc:spigot-api:$spigotVersion")
-    compileOnly("com.github.sirblobman.api:core:2.6-SNAPSHOT")
-    compileOnly("net.milkbowl.vault:VaultAPI:1.7")
+    compileOnly("com.github.sirblobman.api:core:2.7-SNAPSHOT")
+    compileOnly("com.github.MilkBowl:VaultAPI:1.7")
 }
 
 tasks {
