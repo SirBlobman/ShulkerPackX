@@ -7,7 +7,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.github.sirblobman.api.adventure.adventure.text.Component;
+import com.github.sirblobman.api.shaded.adventure.text.Component;
 import com.github.sirblobman.api.item.ItemBuilder;
 import com.github.sirblobman.api.language.ComponentHelper;
 import com.github.sirblobman.api.language.LanguageManager;
@@ -18,7 +18,7 @@ import com.github.sirblobman.api.menu.button.AbstractButton;
 import com.github.sirblobman.api.menu.button.ExitButton;
 import com.github.sirblobman.api.nms.ItemHandler;
 import com.github.sirblobman.api.nms.MultiVersionHandler;
-import com.github.sirblobman.api.xseries.XMaterial;
+import com.github.sirblobman.api.shaded.xseries.XMaterial;
 import com.github.sirblobman.shulker.ShulkerPlugin;
 import com.github.sirblobman.shulker.manager.ShopAccessManager;
 import com.github.sirblobman.shulker.manager.VaultManager;

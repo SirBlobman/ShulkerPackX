@@ -8,7 +8,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 import com.github.sirblobman.api.utility.Validate;
-import com.github.sirblobman.api.xseries.XMaterial;
+import com.github.sirblobman.api.shaded.xseries.XMaterial;
 import com.github.sirblobman.shulker.ShulkerPlugin;
 
 import org.jetbrains.annotations.NotNull;

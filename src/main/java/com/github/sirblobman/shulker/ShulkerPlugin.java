@@ -8,8 +8,8 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.github.sirblobman.api.bstats.bukkit.Metrics;
-import com.github.sirblobman.api.bstats.charts.SimplePie;
+import com.github.sirblobman.api.shaded.bstats.bukkit.Metrics;
+import com.github.sirblobman.api.shaded.bstats.charts.SimplePie;
 import com.github.sirblobman.api.configuration.ConfigurationManager;
 import com.github.sirblobman.api.core.CorePlugin;
 import com.github.sirblobman.api.language.Language;

@@ -18,7 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.github.sirblobman.api.adventure.adventure.text.Component;
+import com.github.sirblobman.api.shaded.adventure.text.Component;
 import com.github.sirblobman.api.language.ComponentHelper;
 import com.github.sirblobman.api.menu.AdvancedAbstractMenu;
 import com.github.sirblobman.api.nms.MultiVersionHandler;
