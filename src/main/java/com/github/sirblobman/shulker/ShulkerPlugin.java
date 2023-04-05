@@ -8,18 +8,18 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.github.sirblobman.api.shaded.bstats.bukkit.Metrics;
-import com.github.sirblobman.api.shaded.bstats.charts.SimplePie;
 import com.github.sirblobman.api.configuration.ConfigurationManager;
 import com.github.sirblobman.api.core.CorePlugin;
 import com.github.sirblobman.api.language.Language;
 import com.github.sirblobman.api.language.LanguageManager;
 import com.github.sirblobman.api.plugin.ConfigurablePlugin;
+import com.github.sirblobman.api.shaded.bstats.bukkit.Metrics;
+import com.github.sirblobman.api.shaded.bstats.charts.SimplePie;
 import com.github.sirblobman.api.update.UpdateManager;
 import com.github.sirblobman.shulker.command.CommandShulkerPackShop;
-import com.github.sirblobman.shulker.manager.VaultManager;
 import com.github.sirblobman.shulker.listener.ListenerMenu;
 import com.github.sirblobman.shulker.manager.ShopAccessManager;
+import com.github.sirblobman.shulker.manager.VaultManager;
 
 import org.jetbrains.annotations.NotNull;
 

@@ -67,8 +67,10 @@ publishing {
             url = uri("https://nexus.sirblobman.xyz/repository/public-snapshots/")
 
             credentials {
-                val currentUsername = System.getenv("MAVEN_DEPLOY_USERNAME") ?: findProperty("mavenUsernameSirBlobman") ?: ""
-                val currentPassword = System.getenv("MAVEN_DEPLOY_PASSWORD") ?: findProperty("mavenPasswordSirBlobman") ?: ""
+                val currentUsername =
+                    System.getenv("MAVEN_DEPLOY_USERNAME") ?: findProperty("mavenUsernameSirBlobman") ?: ""
+                val currentPassword =
+                    System.getenv("MAVEN_DEPLOY_PASSWORD") ?: findProperty("mavenPasswordSirBlobman") ?: ""
 
                 username = currentUsername as String
                 password = currentPassword as String
