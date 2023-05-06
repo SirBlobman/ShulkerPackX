@@ -18,10 +18,16 @@ pipeline {
     }
 
     stages {
-        stage("Gradle: Build (No Daemon)") {
+        stage ("Gradle: Publish") {
             steps {
                 withGradle {
-                    sh("./gradlew clean build --refresh-dependencies --no-daemon")
+                    script {
+                        if (env.BRANCH_NAME == "main") {
+                            sh("./gradlew clean build publish --refresh-dependencies --no-daemon")
+                        } else {
+                            sh("./gradlew clean build --refresh-dependencies --no-daemon")
+                        }
+                    }
                 }
             }
         }

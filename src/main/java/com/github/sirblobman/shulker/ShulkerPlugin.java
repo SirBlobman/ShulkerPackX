@@ -2,9 +2,10 @@ package com.github.sirblobman.shulker;
 
 import java.util.logging.Logger;
 
+import org.jetbrains.annotations.NotNull;
+
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -13,15 +14,13 @@ import com.github.sirblobman.api.core.CorePlugin;
 import com.github.sirblobman.api.language.Language;
 import com.github.sirblobman.api.language.LanguageManager;
 import com.github.sirblobman.api.plugin.ConfigurablePlugin;
-import com.github.sirblobman.api.shaded.bstats.bukkit.Metrics;
-import com.github.sirblobman.api.shaded.bstats.charts.SimplePie;
-import com.github.sirblobman.api.update.UpdateManager;
+import com.github.sirblobman.api.update.SpigotUpdateManager;
 import com.github.sirblobman.shulker.command.CommandShulkerPackShop;
 import com.github.sirblobman.shulker.listener.ListenerMenu;
 import com.github.sirblobman.shulker.manager.ShopAccessManager;
 import com.github.sirblobman.shulker.manager.VaultManager;
-
-import org.jetbrains.annotations.NotNull;
+import com.github.sirblobman.api.shaded.bstats.bukkit.Metrics;
+import com.github.sirblobman.api.shaded.bstats.charts.SimplePie;
 
 public final class ShulkerPlugin extends ConfigurablePlugin {
     private final ShopAccessManager shopAccessManager;
@@ -56,7 +55,7 @@ public final class ShulkerPlugin extends ConfigurablePlugin {
 
     @Override
     public void onDisable() {
-        HandlerList.unregisterAll(this);
+        // Do Nothing
     }
 
     @Override
@@ -75,13 +74,11 @@ public final class ShulkerPlugin extends ConfigurablePlugin {
         }
     }
 
-    @NotNull
-    public ShopAccessManager getShopAccessManager() {
+    public @NotNull ShopAccessManager getShopAccessManager() {
         return this.shopAccessManager;
     }
 
-    @NotNull
-    public VaultManager getHookVault() {
+    public @NotNull VaultManager getHookVault() {
         if (this.hookVault == null) {
             throw new IllegalStateException("Vault features are not currently enabled!");
         }
@@ -123,7 +120,7 @@ public final class ShulkerPlugin extends ConfigurablePlugin {
 
     private void registerUpdateChecker() {
         CorePlugin corePlugin = JavaPlugin.getPlugin(CorePlugin.class);
-        UpdateManager updateManager = corePlugin.getUpdateManager();
+        SpigotUpdateManager updateManager = corePlugin.getSpigotUpdateManager();
         updateManager.addResource(this, 81793L);
     }
 
@@ -133,7 +130,7 @@ public final class ShulkerPlugin extends ConfigurablePlugin {
         metrics.addCustomChart(languagePie);
     }
 
-    private String getDefaultLanguageCode() {
+    private @NotNull String getDefaultLanguageCode() {
         LanguageManager languageManager = getLanguageManager();
         Language defaultLanguage = languageManager.getDefaultLanguage();
         if (defaultLanguage == null) {

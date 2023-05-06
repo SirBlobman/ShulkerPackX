@@ -1,29 +1,30 @@
 package com.github.sirblobman.shulker.menu.button;
 
-import org.bukkit.Bukkit;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitScheduler;
 
-import com.github.sirblobman.api.language.ComponentHelper;
+import com.github.sirblobman.api.folia.FoliaHelper;
+import com.github.sirblobman.api.folia.scheduler.TaskScheduler;
 import com.github.sirblobman.api.language.LanguageManager;
 import com.github.sirblobman.api.language.replacer.Replacer;
 import com.github.sirblobman.api.language.replacer.StringReplacer;
 import com.github.sirblobman.api.menu.button.QuickButton;
+import com.github.sirblobman.api.menu.task.CloseMenuTask;
 import com.github.sirblobman.api.nms.ItemHandler;
 import com.github.sirblobman.api.nms.MultiVersionHandler;
-import com.github.sirblobman.api.shaded.adventure.text.Component;
-import com.github.sirblobman.api.shaded.adventure.text.TextReplacementConfig;
-import com.github.sirblobman.api.shaded.xseries.XMaterial;
 import com.github.sirblobman.api.utility.ItemUtility;
-import com.github.sirblobman.api.utility.Validate;
 import com.github.sirblobman.api.utility.paper.PaperChecker;
 import com.github.sirblobman.api.utility.paper.PaperHelper;
 import com.github.sirblobman.shulker.ShulkerPlugin;
 import com.github.sirblobman.shulker.manager.ShopAccessManager;
 import com.github.sirblobman.shulker.manager.VaultManager;
+import com.github.sirblobman.api.shaded.adventure.text.Component;
+import com.github.sirblobman.api.shaded.adventure.text.TextReplacementConfig;
+import com.github.sirblobman.api.shaded.xseries.XMaterial;
 
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
@@ -32,21 +33,21 @@ public final class PurchaseShulkerBoxButton extends QuickButton {
     private final ShulkerPlugin plugin;
     private final XMaterial material;
 
-    public PurchaseShulkerBoxButton(ShulkerPlugin plugin, XMaterial material) {
-        this.plugin = Validate.notNull(plugin, "plugin must not be null!");
-        this.material = Validate.notNull(material, "material must not be null!");
+    public PurchaseShulkerBoxButton(@NotNull ShulkerPlugin plugin, @NotNull XMaterial material) {
+        this.plugin = plugin;
+        this.material = material;
     }
 
-    public ShulkerPlugin getPlugin() {
+    public @NotNull ShulkerPlugin getPlugin() {
         return this.plugin;
     }
 
-    public XMaterial getMaterial() {
+    public @NotNull XMaterial getMaterial() {
         return this.material;
     }
 
     @Override
-    public void onLeftClick(Player player, boolean shift) {
+    public void onLeftClick(@NotNull Player player, boolean shift) {
         ShulkerPlugin plugin = getPlugin();
         LanguageManager languageManager = plugin.getLanguageManager();
         ShopAccessManager shopAccessManager = plugin.getShopAccessManager();
@@ -88,13 +89,16 @@ public final class PurchaseShulkerBoxButton extends QuickButton {
         closeMenu(player);
     }
 
-    private void closeMenu(Player player) {
+    private void closeMenu(@NotNull Player player) {
         ShulkerPlugin plugin = getPlugin();
-        BukkitScheduler scheduler = Bukkit.getScheduler();
-        scheduler.runTaskLater(plugin, player::closeInventory, 1L);
+        CloseMenuTask task = new CloseMenuTask(plugin, player);
+
+        FoliaHelper foliaHelper = plugin.getFoliaHelper();
+        TaskScheduler scheduler = foliaHelper.getScheduler();
+        scheduler.scheduleEntityTask(task);
     }
 
-    private void sendPurchaseSuccessfulMessage(Player player, XMaterial material) {
+    private void sendPurchaseSuccessfulMessage(@NotNull Player player, @NotNull XMaterial material) {
         ShulkerPlugin plugin = getPlugin();
         LanguageManager languageManager = plugin.getLanguageManager();
         Component preMessage = languageManager.getMessage(player, "shop-menu.purchase-success");
@@ -103,7 +107,7 @@ public final class PurchaseShulkerBoxButton extends QuickButton {
         languageManager.sendMessage(player, message);
     }
 
-    private Component replaceDisplayName(Component original, XMaterial material) {
+    private @NotNull Component replaceDisplayName(@NotNull Component original, @NotNull XMaterial material) {
         ItemStack item = material.parseItem();
         Component displayName = getDisplayName(item);
 
@@ -115,7 +119,7 @@ public final class PurchaseShulkerBoxButton extends QuickButton {
         return original.replaceText(replacementConfig);
     }
 
-    private Component getDisplayName(ItemStack item) {
+    private @NotNull Component getDisplayName(@Nullable ItemStack item) {
         if (ItemUtility.isAir(item)) {
             return Component.text("null");
         }
@@ -125,17 +129,16 @@ public final class PurchaseShulkerBoxButton extends QuickButton {
             if (displayName != null) {
                 return displayName;
             }
-        } else {
-            ItemMeta itemMeta = item.getItemMeta();
-            if (itemMeta != null && itemMeta.hasDisplayName()) {
-                String displayName = itemMeta.getDisplayName();
-                return ComponentHelper.toComponent(displayName);
-            }
         }
 
         ShulkerPlugin plugin = getPlugin();
         MultiVersionHandler multiVersionHandler = plugin.getMultiVersionHandler();
         ItemHandler itemHandler = multiVersionHandler.getItemHandler();
+        Component displayName = itemHandler.getDisplayName(item);
+        if (displayName != null) {
+            return displayName;
+        }
+
         String localizedName = itemHandler.getLocalizedName(item);
         return Component.text(localizedName);
     }

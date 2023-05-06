@@ -4,6 +4,9 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import org.bukkit.Bukkit;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.ShulkerBox;
@@ -18,40 +21,37 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.github.sirblobman.api.language.ComponentHelper;
 import com.github.sirblobman.api.menu.AdvancedAbstractMenu;
+import com.github.sirblobman.api.nms.ItemHandler;
 import com.github.sirblobman.api.nms.MultiVersionHandler;
-import com.github.sirblobman.api.shaded.adventure.text.Component;
 import com.github.sirblobman.api.utility.ItemUtility;
-import com.github.sirblobman.api.utility.Validate;
 import com.github.sirblobman.api.utility.paper.PaperChecker;
 import com.github.sirblobman.api.utility.paper.PaperHelper;
 import com.github.sirblobman.shulker.ShulkerPlugin;
 import com.github.sirblobman.shulker.event.ShulkerBoxPostCloseEvent;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import com.github.sirblobman.api.shaded.adventure.text.Component;
 
 public final class ShulkerBoxMenu extends AdvancedAbstractMenu<ShulkerPlugin> {
     private final ItemStack shulkerBoxItem;
 
-    public ShulkerBoxMenu(ShulkerPlugin plugin, Player player, ItemStack shulkerBoxItem) {
+    public ShulkerBoxMenu(@NotNull ShulkerPlugin plugin, @NotNull Player player, @NotNull ItemStack shulkerBoxItem) {
         super(plugin, player);
-        this.shulkerBoxItem = Validate.notNull(shulkerBoxItem, "shulkerBoxItem must not be null!");
 
-        if (!isShulkerBox(this.shulkerBoxItem)) {
+        if (!isShulkerBox(shulkerBoxItem)) {
             throw new IllegalArgumentException("shulkerBoxItem must be a shulker box!");
         }
+
+        this.shulkerBoxItem = shulkerBoxItem;
     }
 
     @Override
-    public MultiVersionHandler getMultiVersionHandler() {
+    public @NotNull MultiVersionHandler getMultiVersionHandler() {
         ShulkerPlugin plugin = getPlugin();
         return plugin.getMultiVersionHandler();
     }
 
     @Override
-    public Component getTitle() {
+    public @NotNull Component getTitle() {
         Component displayName = getShulkerBoxItemDisplayName();
         if (displayName != null) {
             return displayName;
@@ -89,7 +89,7 @@ public final class ShulkerBoxMenu extends AdvancedAbstractMenu<ShulkerPlugin> {
     }
 
     @Override
-    public void onValidClick(InventoryClickEvent e) {
+    public void onValidClick(@NotNull InventoryClickEvent e) {
         printDebug("Detected valid InventoryClickEvent.");
 
         int slot = e.getRawSlot();
@@ -130,7 +130,7 @@ public final class ShulkerBoxMenu extends AdvancedAbstractMenu<ShulkerPlugin> {
     }
 
     @Override
-    public void onValidDrag(InventoryDragEvent e) {
+    public void onValidDrag(@NotNull InventoryDragEvent e) {
         Set<Integer> rawSlots = e.getRawSlots();
         for (Integer rawSlot : rawSlots) {
             if (rawSlot == null || rawSlot < 0) {
@@ -158,35 +158,30 @@ public final class ShulkerBoxMenu extends AdvancedAbstractMenu<ShulkerPlugin> {
         }
     }
 
-    private ItemStack getShulkerBoxItem() {
+    private @NotNull ItemStack getShulkerBoxItem() {
         return this.shulkerBoxItem;
     }
 
-    @Nullable
-    private Component getShulkerBoxItemDisplayName() {
+    private @Nullable Component getShulkerBoxItemDisplayName() {
         ItemStack item = getShulkerBoxItem();
         if (ItemUtility.isAir(item)) {
             return null;
         }
 
-        ItemMeta itemMeta = item.getItemMeta();
-        if (itemMeta == null) {
-            return null;
-        }
-
-        if (!itemMeta.hasDisplayName()) {
-            return null;
-        }
-
         if (PaperChecker.hasNativeComponentSupport()) {
-            return PaperHelper.getDisplayName(item);
-        } else {
-            String legacyDisplayName = itemMeta.getDisplayName();
-            return ComponentHelper.toComponent(legacyDisplayName);
+            Component displayName = PaperHelper.getDisplayName(item);
+            if (displayName != null) {
+                return displayName;
+            }
         }
+
+        ShulkerPlugin plugin = getPlugin();
+        MultiVersionHandler multiVersionHandler = plugin.getMultiVersionHandler();
+        ItemHandler itemHandler = multiVersionHandler.getItemHandler();
+        return itemHandler.getDisplayName(item);
     }
 
-    private boolean isShulkerBox(ItemStack item) {
+    private boolean isShulkerBox(@Nullable ItemStack item) {
         if (ItemUtility.isAir(item)) {
             return false;
         }
@@ -201,7 +196,7 @@ public final class ShulkerBoxMenu extends AdvancedAbstractMenu<ShulkerPlugin> {
         return (blockState instanceof ShulkerBox);
     }
 
-    private ItemStack[] getContents() {
+    private ItemStack @NotNull [] getContents() {
         ItemStack item = getShulkerBoxItem();
         ItemMeta itemMeta = item.getItemMeta();
         if (itemMeta == null) {
@@ -216,7 +211,7 @@ public final class ShulkerBoxMenu extends AdvancedAbstractMenu<ShulkerPlugin> {
         return inventory.getContents();
     }
 
-    private void setContents(ItemStack[] contents) {
+    private void setContents(ItemStack @NotNull [] contents) {
         ItemStack item = getShulkerBoxItem();
         ItemMeta itemMeta = item.getItemMeta();
         if (itemMeta == null) {
@@ -237,8 +232,8 @@ public final class ShulkerBoxMenu extends AdvancedAbstractMenu<ShulkerPlugin> {
         player.updateInventory();
     }
 
-    private void printDebug(String message) {
+    private void printDebug(@NotNull String message) {
         ShulkerPlugin plugin = getPlugin();
-        plugin.printDebug(message);
+        plugin.printDebug("[ShulkerBoxMenu] " + message);
     }
 }

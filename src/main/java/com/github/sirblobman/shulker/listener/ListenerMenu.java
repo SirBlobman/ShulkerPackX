@@ -1,5 +1,7 @@
 package com.github.sirblobman.shulker.listener;
 
+import org.jetbrains.annotations.NotNull;
+
 import org.bukkit.block.BlockState;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.entity.Player;
@@ -20,14 +22,14 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import com.github.sirblobman.api.language.LanguageManager;
 import com.github.sirblobman.api.plugin.listener.PluginListener;
-import com.github.sirblobman.api.shaded.xseries.XMaterial;
 import com.github.sirblobman.api.utility.ItemUtility;
 import com.github.sirblobman.shulker.ShulkerPlugin;
 import com.github.sirblobman.shulker.manager.ShopAccessManager;
 import com.github.sirblobman.shulker.menu.ShulkerBoxMenu;
+import com.github.sirblobman.api.shaded.xseries.XMaterial;
 
 public final class ListenerMenu extends PluginListener<ShulkerPlugin> {
-    public ListenerMenu(ShulkerPlugin plugin) {
+    public ListenerMenu(@NotNull ShulkerPlugin plugin) {
         super(plugin);
     }
 

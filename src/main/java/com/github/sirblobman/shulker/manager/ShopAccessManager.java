@@ -1,5 +1,7 @@
 package com.github.sirblobman.shulker.manager;
 
+import org.jetbrains.annotations.NotNull;
+
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -7,25 +9,27 @@ import org.bukkit.persistence.PersistentDataAdapterContext;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-import com.github.sirblobman.api.shaded.xseries.XMaterial;
 import com.github.sirblobman.api.utility.Validate;
 import com.github.sirblobman.shulker.ShulkerPlugin;
-
-import org.jetbrains.annotations.NotNull;
+import com.github.sirblobman.api.shaded.xseries.XMaterial;
 
 public final class ShopAccessManager {
     private final ShulkerPlugin plugin;
 
-    public ShopAccessManager(ShulkerPlugin plugin) {
-        this.plugin = Validate.notNull(plugin, "plugin must not be null!");
+    public ShopAccessManager(@NotNull ShulkerPlugin plugin) {
+        this.plugin = plugin;
     }
 
-    private NamespacedKey getShopAccessKey() {
-        return new NamespacedKey(this.plugin, "shop-access-values");
+    private @NotNull ShulkerPlugin getPlugin() {
+        return this.plugin;
     }
 
-    @NotNull
-    private PersistentDataContainer getShopAccessContainer(Player player) {
+    private @NotNull NamespacedKey getShopAccessKey() {
+        ShulkerPlugin plugin = getPlugin();
+        return new NamespacedKey(plugin, "shop-access-values");
+    }
+
+    private @NotNull PersistentDataContainer getShopAccessContainer(Player player) {
         Validate.notNull(player, "player must not be null!");
         NamespacedKey shopAccessKey = getShopAccessKey();
 

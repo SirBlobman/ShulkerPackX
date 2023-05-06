@@ -3,23 +3,23 @@ package com.github.sirblobman.shulker.manager;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.jetbrains.annotations.NotNull;
+
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicesManager;
 
-import com.github.sirblobman.api.utility.Validate;
 import com.github.sirblobman.shulker.ShulkerPlugin;
 
 import net.milkbowl.vault.economy.Economy;
-import org.jetbrains.annotations.NotNull;
 
 public final class VaultManager {
     private final ShulkerPlugin plugin;
     private Economy economy;
 
-    public VaultManager(ShulkerPlugin plugin) {
-        this.plugin = Validate.notNull(plugin, "plugin must not be null!");
+    public VaultManager(@NotNull ShulkerPlugin plugin) {
+        this.plugin = plugin;
         this.economy = null;
     }
 
@@ -44,8 +44,7 @@ public final class VaultManager {
         return true;
     }
 
-    @NotNull
-    public Economy getEconomy() {
+    public @NotNull Economy getEconomy() {
         if (this.economy == null) {
             throw new IllegalStateException("setupEconomy() not run yet.");
         }
@@ -53,7 +52,7 @@ public final class VaultManager {
         return this.economy;
     }
 
-    private Logger getLogger() {
+    private @NotNull Logger getLogger() {
         return this.plugin.getLogger();
     }
 }

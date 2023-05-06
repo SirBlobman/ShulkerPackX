@@ -1,14 +1,36 @@
-group = "com.github.sirblobman.plugin"
-version = "1.0.0-SNAPSHOT"
+val apiVersion = fetchProperty("version.api", "invalid")
+val mavenUsername = fetchEnv("MAVEN_DEPLOY_USR", "mavenUsernameSirBlobman", "")
+val mavenPassword = fetchEnv("MAVEN_DEPLOY_PSW", "mavenPasswordSirBlobman", "")
 
-val spigotVersion = findProperty("spigot.version") ?: ""
+val baseVersion = fetchProperty("version.base", "invalid")
+val betaString = fetchProperty("version.beta", "false")
+val jenkinsBuildNumber = fetchEnv("BUILD_NUMBER", null, "Unofficial")
 
-val jenkinsBuildNumber = System.getenv("BUILD_NUMBER") ?: "Unknown"
-val baseVersion = findProperty("version.base") as String
-val betaVersionString = (findProperty("version.beta") ?: "false") as String
-val betaVersion = betaVersionString.toBoolean()
-val betaVersionPart = if (betaVersion) "Beta-" else ""
-val calculatedVersion = "$baseVersion.$betaVersionPart$jenkinsBuildNumber"
+val betaBoolean = betaString.toBoolean()
+val betaVersion = if (betaBoolean) "Beta-" else ""
+val calculatedVersion = "$baseVersion.$betaVersion$jenkinsBuildNumber"
+
+fun fetchProperty(propertyName: String, defaultValue: String): String {
+    val found = findProperty(propertyName)
+    if (found != null) {
+        return found.toString()
+    }
+
+    return defaultValue
+}
+
+fun fetchEnv(envName: String, propertyName: String?, defaultValue: String): String {
+    val found = System.getenv(envName)
+    if (found != null) {
+        return found
+    }
+
+    if (propertyName != null) {
+        return fetchProperty(propertyName, defaultValue)
+    }
+
+    return defaultValue
+}
 
 plugins {
     id("java")
@@ -29,15 +51,22 @@ repositories {
 }
 
 dependencies {
+    // Java Dependencies
     compileOnly("org.jetbrains:annotations:24.0.1")
+
+    // Spigot API
+    val spigotVersion = findProperty("spigot.version") ?: ""
     compileOnly("org.spigotmc:spigot-api:$spigotVersion")
-    compileOnly("com.github.sirblobman.api:core:2.8-SNAPSHOT")
-    compileOnly("com.github.MilkBowl:VaultAPI:1.7")
+
+    // Plugin Dependencies
+    compileOnly("com.github.sirblobman.api:core:2.9-SNAPSHOT") // BlueSlimeCore
+    compileOnly("com.github.MilkBowl:VaultAPI:1.7") // Vault API
 }
 
 tasks {
     named<Jar>("jar") {
-        archiveFileName.set("ShulkerPackX-$calculatedVersion.jar")
+        version = calculatedVersion
+        archiveBaseName.set("ShulkerPackX")
     }
 
     processResources {
@@ -48,32 +77,26 @@ tasks {
         val pluginMainClass = (findProperty("bukkit.plugin.main") ?: "") as String
 
         filesMatching("plugin.yml") {
-            filter {
-                it.replace("\${bukkit.plugin.name}", pluginName)
-                    .replace("\${bukkit.plugin.prefix}", pluginPrefix)
-                    .replace("\${bukkit.plugin.description}", pluginDescription)
-                    .replace("\${bukkit.plugin.website}", pluginWebsite)
-                    .replace("\${bukkit.plugin.version}", calculatedVersion)
-                    .replace("\${bukkit.plugin.main}", pluginMainClass)
-            }
+            expand(
+                mapOf(
+                    "pluginName" to pluginName,
+                    "pluginPrefix" to pluginPrefix,
+                    "pluginDescription" to pluginDescription,
+                    "pluginWebsite" to pluginWebsite,
+                    "pluginMainClass" to pluginMainClass,
+                    "pluginVersion" to calculatedVersion
+                )
+            )
         }
     }
 }
 
 publishing {
     repositories {
-        maven {
-            name = "sirblobman-public"
-            url = uri("https://nexus.sirblobman.xyz/repository/public-snapshots/")
-
+        maven("https://nexus.sirblobman.xyz/public/") {
             credentials {
-                val currentUsername =
-                    System.getenv("MAVEN_DEPLOY_USERNAME") ?: findProperty("mavenUsernameSirBlobman") ?: ""
-                val currentPassword =
-                    System.getenv("MAVEN_DEPLOY_PASSWORD") ?: findProperty("mavenPasswordSirBlobman") ?: ""
-
-                username = currentUsername as String
-                password = currentPassword as String
+                username = mavenUsername
+                password = mavenPassword
             }
         }
     }
@@ -81,8 +104,8 @@ publishing {
     publications {
         create<MavenPublication>("maven") {
             groupId = "com.github.sirblobman.plugin"
-            artifactId = "ShulkerPackX"
-            version = "1.0.0-SNAPSHOT"
+            artifactId = "shulkerpackx"
+            version = apiVersion
             artifact(tasks["jar"])
         }
     }

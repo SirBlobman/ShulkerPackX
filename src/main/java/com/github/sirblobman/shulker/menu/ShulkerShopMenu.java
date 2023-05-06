@@ -3,6 +3,9 @@ package com.github.sirblobman.shulker.menu;
 import java.util.Arrays;
 import java.util.List;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -13,22 +16,20 @@ import com.github.sirblobman.api.language.LanguageManager;
 import com.github.sirblobman.api.language.replacer.Replacer;
 import com.github.sirblobman.api.language.replacer.StringReplacer;
 import com.github.sirblobman.api.menu.AbstractMenu;
-import com.github.sirblobman.api.menu.button.AbstractButton;
 import com.github.sirblobman.api.menu.button.ExitButton;
+import com.github.sirblobman.api.menu.button.IButton;
 import com.github.sirblobman.api.nms.ItemHandler;
 import com.github.sirblobman.api.nms.MultiVersionHandler;
-import com.github.sirblobman.api.shaded.adventure.text.Component;
-import com.github.sirblobman.api.shaded.xseries.XMaterial;
 import com.github.sirblobman.shulker.ShulkerPlugin;
 import com.github.sirblobman.shulker.manager.ShopAccessManager;
 import com.github.sirblobman.shulker.manager.VaultManager;
 import com.github.sirblobman.shulker.menu.button.PurchaseShulkerBoxButton;
+import com.github.sirblobman.api.shaded.adventure.text.Component;
+import com.github.sirblobman.api.shaded.xseries.XMaterial;
 
 import net.milkbowl.vault.economy.Economy;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-public final class ShulkerShopMenu extends AbstractMenu {
+public final class ShulkerShopMenu extends AbstractMenu<ShulkerPlugin> {
     private static final List<XMaterial> SHULKER_BOX_MATERIALS;
 
     static {
@@ -40,26 +41,19 @@ public final class ShulkerShopMenu extends AbstractMenu {
                 XMaterial.GREEN_SHULKER_BOX, XMaterial.RED_SHULKER_BOX, XMaterial.BLACK_SHULKER_BOX);
     }
 
-    private final ShulkerPlugin plugin;
-
-    public ShulkerShopMenu(ShulkerPlugin plugin, Player player) {
+    public ShulkerShopMenu(@NotNull ShulkerPlugin plugin, @NotNull Player player) {
         super(plugin, player);
-        this.plugin = plugin;
-    }
-
-    private ShulkerPlugin getShulkerPlugin() {
-        return this.plugin;
     }
 
     @Override
     public @NotNull MultiVersionHandler getMultiVersionHandler() {
-        ShulkerPlugin plugin = getShulkerPlugin();
+        ShulkerPlugin plugin = getPlugin();
         return plugin.getMultiVersionHandler();
     }
 
     @Override
     public @NotNull LanguageManager getLanguageManager() {
-        ShulkerPlugin plugin = getShulkerPlugin();
+        ShulkerPlugin plugin = getPlugin();
         return plugin.getLanguageManager();
     }
 
@@ -82,9 +76,9 @@ public final class ShulkerShopMenu extends AbstractMenu {
     }
 
     @Override
-    public @Nullable AbstractButton getButton(int slot) {
+    public @Nullable IButton getButton(int slot) {
         if (slot >= 0 && slot < 17) {
-            ShulkerPlugin plugin = getShulkerPlugin();
+            ShulkerPlugin plugin = getPlugin();
             XMaterial material = SHULKER_BOX_MATERIALS.get(slot);
             return new PurchaseShulkerBoxButton(plugin, material);
         }
@@ -108,11 +102,11 @@ public final class ShulkerShopMenu extends AbstractMenu {
         return true;
     }
 
-    private ItemStack getShulkerBoxItem(int slot) {
+    private @NotNull ItemStack getShulkerBoxItem(int slot) {
         XMaterial material = SHULKER_BOX_MATERIALS.get(slot);
         ItemBuilder builder = new ItemBuilder(material);
 
-        ShulkerPlugin plugin = getShulkerPlugin();
+        ShulkerPlugin plugin = getPlugin();
         MultiVersionHandler multiVersionHandler = getMultiVersionHandler();
         ItemHandler itemHandler = multiVersionHandler.getItemHandler();
 
@@ -143,7 +137,7 @@ public final class ShulkerShopMenu extends AbstractMenu {
         return builder.build();
     }
 
-    private ItemStack getExitItem() {
+    private @NotNull ItemStack getExitItem() {
         MultiVersionHandler multiVersionHandler = getMultiVersionHandler();
         ItemHandler itemHandler = multiVersionHandler.getItemHandler();
 

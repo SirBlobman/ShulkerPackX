@@ -1,13 +1,11 @@
 package com.github.sirblobman.shulker.event;
 
+import org.jetbrains.annotations.NotNull;
+
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
-
-import com.github.sirblobman.api.utility.Validate;
-
-import org.jetbrains.annotations.NotNull;
 
 /**
  * This event is fired after a custom shulker box menu is closed and saved.
@@ -24,12 +22,12 @@ public final class ShulkerBoxPostCloseEvent extends Event {
     private final HumanEntity humanEntity;
     private final ItemStack shulkerBoxItem;
 
-    public ShulkerBoxPostCloseEvent(HumanEntity humanEntity, ItemStack shulkerBoxItem) {
-        this.humanEntity = Validate.notNull(humanEntity, "humanEntity must not be null!");
-        this.shulkerBoxItem = Validate.notNull(shulkerBoxItem, "shulkerBoxItem must not be null!");
+    public ShulkerBoxPostCloseEvent(@NotNull HumanEntity human, @NotNull ItemStack item) {
+        this.humanEntity = human;
+        this.shulkerBoxItem = item;
     }
 
-    public static HandlerList getHandlerList() {
+    public static @NotNull HandlerList getHandlerList() {
         return HANDLER_LIST;
     }
 
@@ -38,11 +36,11 @@ public final class ShulkerBoxPostCloseEvent extends Event {
         return getHandlerList();
     }
 
-    public HumanEntity getHumanEntity() {
+    public @NotNull HumanEntity getHumanEntity() {
         return this.humanEntity;
     }
 
-    public ItemStack getShulkerBoxItem() {
+    public @NotNull ItemStack getShulkerBoxItem() {
         return this.shulkerBoxItem;
     }
 }
