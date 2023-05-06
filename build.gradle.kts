@@ -60,7 +60,7 @@ dependencies {
 
     // Plugin Dependencies
     compileOnly("com.github.sirblobman.api:core:2.9-SNAPSHOT") // BlueSlimeCore
-    compileOnly("com.github.MilkBowl:VaultAPI:1.7") // Vault API
+    compileOnly("com.github.MilkBowl:VaultAPI:1.7.1") // Vault API
 }
 
 tasks {
