@@ -55,7 +55,7 @@ dependencies {
     compileOnly("org.jetbrains:annotations:24.0.1")
 
     // Spigot API
-    val spigotVersion = findProperty("spigot.version") ?: ""
+    val spigotVersion = fetchProperty("spigot.version", "")
     compileOnly("org.spigotmc:spigot-api:$spigotVersion")
 
     // Plugin Dependencies
