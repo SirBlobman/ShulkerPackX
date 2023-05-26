@@ -8,7 +8,7 @@ val jenkinsBuildNumber = fetchEnv("BUILD_NUMBER", null, "Unofficial")
 
 val betaBoolean = betaString.toBoolean()
 val betaVersion = if (betaBoolean) "Beta-" else ""
-val calculatedVersion = "$baseVersion.$betaVersion$jenkinsBuildNumber"
+version = "$baseVersion.$betaVersion$jenkinsBuildNumber"
 
 fun fetchProperty(propertyName: String, defaultValue: String): String {
     val found = findProperty(propertyName)
@@ -65,7 +65,6 @@ dependencies {
 
 tasks {
     named<Jar>("jar") {
-        version = calculatedVersion
         archiveBaseName.set("ShulkerPackX")
     }
 
@@ -84,7 +83,7 @@ tasks {
                     "pluginDescription" to pluginDescription,
                     "pluginWebsite" to pluginWebsite,
                     "pluginMainClass" to pluginMainClass,
-                    "pluginVersion" to calculatedVersion
+                    "pluginVersion" to version
                 )
             )
         }
