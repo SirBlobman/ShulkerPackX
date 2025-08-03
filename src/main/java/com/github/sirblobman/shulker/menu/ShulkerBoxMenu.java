@@ -21,7 +21,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.github.sirblobman.api.menu.AdvancedAbstractMenu;
 import com.github.sirblobman.api.nms.ItemHandler;
 import com.github.sirblobman.api.nms.MultiVersionHandler;
 import com.github.sirblobman.api.utility.ItemUtility;
@@ -71,7 +70,7 @@ public final class ShulkerBoxMenu extends AdvancedAbstractMenu<ShulkerPlugin> {
     }
 
     @Override
-    public void onValidClose(InventoryCloseEvent e) {
+    public void onValidClose(@NotNull InventoryCloseEvent e) {
         HumanEntity humanEntity = e.getPlayer();
         ItemStack cursorItem = humanEntity.getItemOnCursor();
         if (!ItemUtility.isAir(cursorItem)) {
@@ -187,11 +186,10 @@ public final class ShulkerBoxMenu extends AdvancedAbstractMenu<ShulkerPlugin> {
         }
 
         ItemMeta itemMeta = item.getItemMeta();
-        if (!(itemMeta instanceof BlockStateMeta)) {
+        if (!(itemMeta instanceof BlockStateMeta blockStateMeta)) {
             return false;
         }
 
-        BlockStateMeta blockStateMeta = (BlockStateMeta) itemMeta;
         BlockState blockState = blockStateMeta.getBlockState();
         return (blockState instanceof ShulkerBox);
     }
@@ -211,6 +209,7 @@ public final class ShulkerBoxMenu extends AdvancedAbstractMenu<ShulkerPlugin> {
         return inventory.getContents();
     }
 
+    @SuppressWarnings("UnstableApiUsage")
     private void setContents(ItemStack @NotNull [] contents) {
         ItemStack item = getShulkerBoxItem();
         ItemMeta itemMeta = item.getItemMeta();
@@ -228,8 +227,8 @@ public final class ShulkerBoxMenu extends AdvancedAbstractMenu<ShulkerPlugin> {
         blockStateMeta.setBlockState(shulkerBox);
         item.setItemMeta(blockStateMeta);
 
-        Player player = getPlayer();
-        player.updateInventory();
+//        Player player = getPlayer();
+//        player.updateInventory(); // Required, otherwise the ShulkerBox item will lose all items.
     }
 
     private void printDebug(@NotNull String message) {

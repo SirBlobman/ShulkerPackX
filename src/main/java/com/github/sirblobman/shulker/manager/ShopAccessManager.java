@@ -9,7 +9,6 @@ import org.bukkit.persistence.PersistentDataAdapterContext;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-import com.github.sirblobman.api.utility.Validate;
 import com.github.sirblobman.shulker.ShulkerPlugin;
 import com.github.sirblobman.api.shaded.xseries.XMaterial;
 
@@ -29,10 +28,8 @@ public final class ShopAccessManager {
         return new NamespacedKey(plugin, "shop-access-values");
     }
 
-    private @NotNull PersistentDataContainer getShopAccessContainer(Player player) {
-        Validate.notNull(player, "player must not be null!");
+    private @NotNull PersistentDataContainer getShopAccessContainer(@NotNull Player player) {
         NamespacedKey shopAccessKey = getShopAccessKey();
-
         PersistentDataContainer dataContainer = player.getPersistentDataContainer();
         if (!dataContainer.has(shopAccessKey, PersistentDataType.TAG_CONTAINER)) {
             PersistentDataAdapterContext adapterContext = dataContainer.getAdapterContext();
@@ -49,38 +46,38 @@ public final class ShopAccessManager {
         return container;
     }
 
-    public boolean hasAccess(Player player, XMaterial shulkerPackType) {
-        Validate.notNull(player, "player must not be null!");
-        Validate.notNull(shulkerPackType, "shulkerPackType must not be null!");
-
-        Material bukkitMaterial = shulkerPackType.parseMaterial();
+    @SuppressWarnings("deprecation") // getKey() is deprecated in Spigot, but it's the only method on Paper
+    public boolean hasAccess(@NotNull Player player, @NotNull XMaterial shulkerPackType) {
+        Material bukkitMaterial = shulkerPackType.get();
         if (bukkitMaterial == null) {
             throw new IllegalArgumentException("Your Spigot version is missing the '" + shulkerPackType
                     + "' material value.");
         }
 
+        // getKey() is deprecated in Spigot, but it's the only method on Paper
         NamespacedKey materialKey = bukkitMaterial.getKey();
+
         PersistentDataContainer shopAccessContainer = getShopAccessContainer(player);
         byte access = shopAccessContainer.getOrDefault(materialKey, PersistentDataType.BYTE, (byte) 0);
         return (access == 1);
     }
 
-    public void addAccess(Player player, XMaterial shulkerPackType) {
-        Validate.notNull(player, "player must not be null!");
-        Validate.notNull(shulkerPackType, "shulkerPackType must not be null!");
-
-        Material bukkitMaterial = shulkerPackType.parseMaterial();
+    @SuppressWarnings("deprecation")
+    public void addAccess(@NotNull Player player, @NotNull XMaterial shulkerPackType) {
+        Material bukkitMaterial = shulkerPackType.get();
         if (bukkitMaterial == null) {
             throw new IllegalArgumentException("Your Spigot version is missing the '" + shulkerPackType
                     + "' material value.");
         }
 
+        // getKey() is deprecated in Spigot, but it's the only method on Paper
         NamespacedKey materialKey = bukkitMaterial.getKey();
+
         PersistentDataContainer shopAccessContainer = getShopAccessContainer(player);
         shopAccessContainer.set(materialKey, PersistentDataType.BYTE, (byte) 1);
 
         PersistentDataContainer dataContainer = player.getPersistentDataContainer();
         dataContainer.set(getShopAccessKey(), PersistentDataType.TAG_CONTAINER, shopAccessContainer);
-        plugin.printDebug("Set material key '" + materialKey + "' to '1' for player '" + player + "'.");
+        getPlugin().printDebug("Set material key '" + materialKey + "' to '1' for player '" + player + "'.");
     }
 }

@@ -62,11 +62,10 @@ public final class ListenerMenu extends PluginListener<ShulkerPlugin> {
         }
 
         ItemMeta itemMeta = item.getItemMeta();
-        if (!(itemMeta instanceof BlockStateMeta)) {
+        if (!(itemMeta instanceof BlockStateMeta blockStateMeta)) {
             return;
         }
 
-        BlockStateMeta blockStateMeta = (BlockStateMeta) itemMeta;
         BlockState blockState = blockStateMeta.getBlockState();
         if (!(blockState instanceof ShulkerBox)) {
             return;
