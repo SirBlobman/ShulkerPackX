@@ -21,6 +21,7 @@ softdepend:
 commands:
   shulker-shop:
     description: "Open the shulker shop menu."
+    permission: "shulkerpackx.shop"
     usage: "/<command>"
     aliases:
       - "shulkershop"
@@ -30,6 +31,9 @@ commands:
       - "spxshop"
 
 permissions:
+  shulkerpackx.shop:
+    description: "Allow a player to open the shulker pack shop"
+    default: true
   shulkerpackx.shift.place:
     description: "Allow a player to place a shulker box when they are sneaking."
     default: op

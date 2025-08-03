@@ -16,6 +16,7 @@ public final class CommandShulkerPackShop extends PlayerCommand {
 
     public CommandShulkerPackShop(@NotNull ShulkerPlugin plugin) {
         super(plugin, "shulker-shop");
+        setPermissionName("shulkerpackx.shop");
         this.plugin = plugin;
     }
 
