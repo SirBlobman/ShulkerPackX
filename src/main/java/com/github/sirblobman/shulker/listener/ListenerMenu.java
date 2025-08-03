@@ -2,6 +2,10 @@ package com.github.sirblobman.shulker.listener;
 
 import org.jetbrains.annotations.NotNull;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.entity.Player;
@@ -19,13 +23,16 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.PluginManager;
 
 import com.github.sirblobman.api.language.LanguageManager;
 import com.github.sirblobman.api.plugin.listener.PluginListener;
 import com.github.sirblobman.api.utility.ItemUtility;
 import com.github.sirblobman.shulker.ShulkerPlugin;
+import com.github.sirblobman.shulker.configuration.MainConfiguration;
 import com.github.sirblobman.shulker.manager.ShopAccessManager;
 import com.github.sirblobman.shulker.menu.ShulkerBoxMenu;
+import com.github.sirblobman.shulker.worldguard.WorldGuardChecker;
 import com.github.sirblobman.api.shaded.xseries.XMaterial;
 
 public final class ListenerMenu extends PluginListener<ShulkerPlugin> {
@@ -71,6 +78,17 @@ public final class ListenerMenu extends PluginListener<ShulkerPlugin> {
             return;
         }
 
+        Block clickedBlock = e.getClickedBlock();
+        if (clickedBlock != null) {
+            BlockFace face = e.getBlockFace();
+            Location relativeLocation = clickedBlock.getRelative(face).getLocation();
+            if (isCheckWorldGuard() && WorldGuardChecker.canPlace(player, relativeLocation)) {
+                // WorldGuard Mode: TRUE
+                // Player can place the shulker, so it doesn't need to be opened.
+                return;
+            }
+        }
+
         e.setUseItemInHand(Result.DENY);
         e.setUseInteractedBlock(Result.DENY);
 
@@ -99,5 +117,15 @@ public final class ListenerMenu extends PluginListener<ShulkerPlugin> {
         if (topInventoryHolder instanceof ShulkerBoxMenu) {
             e.setCancelled(true);
         }
+    }
+
+    private boolean isCheckWorldGuard() {
+        MainConfiguration configuration = getPlugin().getMainConfiguration();
+        if (!configuration.isWorldGuardMode()) {
+            return false;
+        }
+
+        PluginManager pluginManager = Bukkit.getPluginManager();
+        return pluginManager.isPluginEnabled("WorldGuard");
     }
 }

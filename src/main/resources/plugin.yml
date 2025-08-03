@@ -17,6 +17,7 @@ depend:
 
 softdepend:
   - "Vault"
+  - "WorldGuard"
 
 commands:
   shulker-shop:

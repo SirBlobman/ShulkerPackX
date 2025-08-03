@@ -47,6 +47,7 @@ repositories {
     mavenCentral()
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
     maven("https://oss.sonatype.org/content/repositories/snapshots/")
+    maven("https://repo.codemc.io/repository/maven-public/")
     maven("https://nexus.sirblobman.xyz/public/")
     maven("https://nexus.sirblobman.xyz/proxy-jitpack/")
 }
@@ -61,6 +62,7 @@ dependencies {
     // Plugin Dependencies
     compileOnly("com.github.sirblobman.api:core:2.9-SNAPSHOT") // BlueSlimeCore
     compileOnly("com.github.MilkBowl:VaultAPI:1.7.1") // Vault API
+    compileOnly("org.codemc.worldguardwrapper:worldguardwrapper:1.2.1-SNAPSHOT") // WorldGuard Compatibility
 }
 
 tasks {

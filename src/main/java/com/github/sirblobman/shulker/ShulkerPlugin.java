@@ -30,7 +30,7 @@ public final class ShulkerPlugin extends ConfigurablePlugin {
     private VaultManager hookVault;
 
     public ShulkerPlugin() {
-        this.mainConfiguration = new MainConfiguration();
+        this.mainConfiguration = new MainConfiguration(this);
         this.shopAccessManager = new ShopAccessManager(this);
         this.hookVault = null;
     }

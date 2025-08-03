@@ -3,12 +3,30 @@
 # Default: false
 debug-mode: false
 
-# Setting this to true will allow players to shift+right-click shulker boxes inside of GUIs to open them.
+# Setting this to true will allow players to shift+right-click shulker boxes inside inventories to open them.
 # NOT RECOMMENDED: May cause issues with other plugins or duplications
 # This option will only work with shulker boxes that already contain items.
 # If the shulker box is empty, it will not work.
 # Default: false
 allow-inventory-right-click: false
+
+# Only enable Shulker Box in regions where a player can't place a block.
+# Requires WorldGuard. Doesn't apply to shulker boxes inside of inventories.
+# Default: false
+world-guard-mode: false
+
+# Sound for opening shulker boxes:
+open-sound:
+  sound: "minecraft:block.shulker_box.open"
+  category: "ui"
+  volume: 1.0
+  pitch: 1.0
+
+close-sound:
+  sound: "minecraft:block.shulker_box.close"
+  category: "ui"
+  volume: 1.0
+  pitch: 1.0
 
 shop-menu:
   # Set this to true to enable the ShulkerPackX shop menu.

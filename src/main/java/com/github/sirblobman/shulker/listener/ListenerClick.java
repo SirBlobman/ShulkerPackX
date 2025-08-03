@@ -2,6 +2,7 @@ package com.github.sirblobman.shulker.listener;
 
 import org.jetbrains.annotations.NotNull;
 
+import org.bukkit.Bukkit;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.entity.HumanEntity;
@@ -13,11 +14,13 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.PluginManager;
 
 import com.github.sirblobman.api.language.LanguageManager;
 import com.github.sirblobman.api.plugin.listener.PluginListener;
 import com.github.sirblobman.api.utility.ItemUtility;
 import com.github.sirblobman.shulker.ShulkerPlugin;
+import com.github.sirblobman.shulker.configuration.MainConfiguration;
 import com.github.sirblobman.shulker.manager.ShopAccessManager;
 import com.github.sirblobman.shulker.menu.ShulkerBoxMenu;
 import com.github.sirblobman.api.shaded.xseries.XMaterial;
@@ -84,5 +87,15 @@ public final class ListenerClick extends PluginListener<ShulkerPlugin> {
 
     private boolean isEnabled() {
         return getPlugin().getMainConfiguration().isAllowInventoryRightClick();
+    }
+
+    private boolean isCheckWorldGuard() {
+        MainConfiguration configuration = getPlugin().getMainConfiguration();
+        if (!configuration.isWorldGuardMode()) {
+            return false;
+        }
+
+        PluginManager pluginManager = Bukkit.getPluginManager();
+        return pluginManager.isPluginEnabled("WorldGuard");
     }
 }

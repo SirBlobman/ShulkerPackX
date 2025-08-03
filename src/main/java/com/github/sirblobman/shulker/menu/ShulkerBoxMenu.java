@@ -21,6 +21,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.github.sirblobman.api.folia.scheduler.TaskScheduler;
 import com.github.sirblobman.api.nms.ItemHandler;
 import com.github.sirblobman.api.nms.MultiVersionHandler;
 import com.github.sirblobman.api.utility.ItemUtility;
@@ -28,6 +29,8 @@ import com.github.sirblobman.api.utility.paper.PaperChecker;
 import com.github.sirblobman.api.utility.paper.PaperHelper;
 import com.github.sirblobman.shulker.ShulkerPlugin;
 import com.github.sirblobman.shulker.event.ShulkerBoxPostCloseEvent;
+import com.github.sirblobman.shulker.menu.task.PlaySoundTask;
+import com.github.sirblobman.api.shaded.adventure.sound.Sound;
 import com.github.sirblobman.api.shaded.adventure.text.Component;
 
 public final class ShulkerBoxMenu extends AdvancedAbstractMenu<ShulkerPlugin> {
@@ -70,6 +73,18 @@ public final class ShulkerBoxMenu extends AdvancedAbstractMenu<ShulkerPlugin> {
     }
 
     @Override
+    public void open() {
+        super.open();
+
+        Sound openSound = getPlugin().getMainConfiguration().getOpenSound();
+        if (openSound != null) {
+            TaskScheduler taskScheduler = getTaskScheduler();
+            PlaySoundTask playSoundTask = new PlaySoundTask(getPlugin(), getPlayer(), openSound);
+            taskScheduler.scheduleEntityTask(playSoundTask);
+        }
+    }
+
+    @Override
     public void onValidClose(@NotNull InventoryCloseEvent e) {
         HumanEntity humanEntity = e.getPlayer();
         ItemStack cursorItem = humanEntity.getItemOnCursor();
@@ -85,6 +100,13 @@ public final class ShulkerBoxMenu extends AdvancedAbstractMenu<ShulkerPlugin> {
         ItemStack item = getShulkerBoxItem();
         ShulkerBoxPostCloseEvent event = new ShulkerBoxPostCloseEvent(humanEntity, item);
         Bukkit.getPluginManager().callEvent(event);
+
+        Sound closeSound = getPlugin().getMainConfiguration().getCloseSound();
+        if (closeSound != null) {
+            TaskScheduler taskScheduler = getTaskScheduler();
+            PlaySoundTask playSoundTask = new PlaySoundTask(getPlugin(), getPlayer(), closeSound);
+            taskScheduler.scheduleEntityTask(playSoundTask);
+        }
     }
 
     @Override
@@ -209,7 +231,6 @@ public final class ShulkerBoxMenu extends AdvancedAbstractMenu<ShulkerPlugin> {
         return inventory.getContents();
     }
 
-    @SuppressWarnings("UnstableApiUsage")
     private void setContents(ItemStack @NotNull [] contents) {
         ItemStack item = getShulkerBoxItem();
         ItemMeta itemMeta = item.getItemMeta();
@@ -226,9 +247,6 @@ public final class ShulkerBoxMenu extends AdvancedAbstractMenu<ShulkerPlugin> {
 
         blockStateMeta.setBlockState(shulkerBox);
         item.setItemMeta(blockStateMeta);
-
-//        Player player = getPlayer();
-//        player.updateInventory(); // Required, otherwise the ShulkerBox item will lose all items.
     }
 
     private void printDebug(@NotNull String message) {
