@@ -15,13 +15,14 @@ allow-inventory-right-click: false
 # Default: false
 world-guard-mode: false
 
-# Sound for opening shulker boxes:
+# Sound for opening shulker boxes.
 open-sound:
   sound: "minecraft:block.shulker_box.open"
   category: "ui"
   volume: 1.0
   pitch: 1.0
 
+# Sound for closing shulker boxes.
 close-sound:
   sound: "minecraft:block.shulker_box.close"
   category: "ui"
