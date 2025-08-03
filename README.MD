@@ -4,4 +4,5 @@ A plugin that allows you to open shulker boxes without placing them.
 
 ## Requirements
 
-- Spigot or Paper (1.14.4 / 1.15.2 / 1.16.5 / 1.17.1 / 1.18.2 / 1.19.3)
+- Java 21
+- Spigot, Paper, or Folia 1.21.8
