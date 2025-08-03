@@ -3,7 +3,6 @@ package com.github.sirblobman.shulker.menu.button;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -18,6 +17,7 @@ import com.github.sirblobman.api.utility.ItemUtility;
 import com.github.sirblobman.api.utility.paper.PaperChecker;
 import com.github.sirblobman.api.utility.paper.PaperHelper;
 import com.github.sirblobman.shulker.ShulkerPlugin;
+import com.github.sirblobman.shulker.configuration.ShopMenuConfiguration;
 import com.github.sirblobman.shulker.manager.ShopAccessManager;
 import com.github.sirblobman.shulker.manager.VaultManager;
 import com.github.sirblobman.shulker.menu.task.CloseMenuTask;
@@ -56,9 +56,8 @@ public final class PurchaseShulkerBoxButton extends QuickButton {
             return;
         }
 
-        String materialName = material.name();
-        YamlConfiguration configuration = plugin.getConfig();
-        double price = configuration.getDouble("shop-menu.price." + materialName, 5.0D);
+        ShopMenuConfiguration configuration = plugin.getMainConfiguration().getShopMenuConfiguration();
+        double price = configuration.getPrice(material);
         if (price <= 0.0D) {
             shopAccessManager.addAccess(player, material);
             sendPurchaseSuccessfulMessage(player, material);

@@ -3,10 +3,21 @@
 # Default: false
 debug-mode: false
 
+# Setting this to true will allow players to shift+right-click shulker boxes inside of GUIs to open them.
+# NOT RECOMMENDED: May cause issues with other plugins or duplications
+# This option will only work with shulker boxes that already contain items.
+# If the shulker box is empty, it will not work.
+# Default: false
+allow-inventory-right-click: false
+
 shop-menu:
   # Set this to true to enable the ShulkerPackX shop menu.
   # Default: true
   enabled: true
+
+  # Set this to the default price for unknown materials.
+  # Mojang may add more shulker box types in the future.
+  default-price: 5.0
   
   # Change the prices for each shulker box here.
   price:

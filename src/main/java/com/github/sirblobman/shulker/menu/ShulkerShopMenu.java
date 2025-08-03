@@ -6,7 +6,6 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -18,6 +17,7 @@ import com.github.sirblobman.api.language.replacer.StringReplacer;
 import com.github.sirblobman.api.nms.ItemHandler;
 import com.github.sirblobman.api.nms.MultiVersionHandler;
 import com.github.sirblobman.shulker.ShulkerPlugin;
+import com.github.sirblobman.shulker.configuration.ShopMenuConfiguration;
 import com.github.sirblobman.shulker.manager.ShopAccessManager;
 import com.github.sirblobman.shulker.manager.VaultManager;
 import com.github.sirblobman.shulker.menu.button.ExitButton;
@@ -109,7 +109,7 @@ public final class ShulkerShopMenu extends AbstractMenu<ShulkerPlugin> {
         MultiVersionHandler multiVersionHandler = getMultiVersionHandler();
         ItemHandler itemHandler = multiVersionHandler.getItemHandler();
 
-        YamlConfiguration configuration = plugin.getConfig();
+        ShopMenuConfiguration configuration = plugin.getMainConfiguration().getShopMenuConfiguration();
         LanguageManager languageManager = getLanguageManager();
         ShopAccessManager shopAccessManager = plugin.getShopAccessManager();
 
@@ -120,11 +120,10 @@ public final class ShulkerShopMenu extends AbstractMenu<ShulkerPlugin> {
             return builder.build();
         }
 
-        String materialName = material.name();
-        double price = configuration.getDouble("shop-menu.price." + materialName, 5.0D);
 
         VaultManager hookVault = plugin.getHookVault();
         Economy economyHandler = hookVault.getEconomy();
+        double price = configuration.getPrice(material);
         String priceFormatted = economyHandler.format(price);
         Replacer priceReplacer = new StringReplacer("{price}", priceFormatted);
 

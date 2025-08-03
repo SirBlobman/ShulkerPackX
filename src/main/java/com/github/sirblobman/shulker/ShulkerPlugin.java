@@ -16,6 +16,8 @@ import com.github.sirblobman.api.language.LanguageManager;
 import com.github.sirblobman.api.plugin.ConfigurablePlugin;
 import com.github.sirblobman.api.update.SpigotUpdateManager;
 import com.github.sirblobman.shulker.command.CommandShulkerPackShop;
+import com.github.sirblobman.shulker.configuration.MainConfiguration;
+import com.github.sirblobman.shulker.listener.ListenerClick;
 import com.github.sirblobman.shulker.listener.ListenerMenu;
 import com.github.sirblobman.shulker.manager.ShopAccessManager;
 import com.github.sirblobman.shulker.manager.VaultManager;
@@ -23,10 +25,12 @@ import com.github.sirblobman.api.shaded.bstats.bukkit.Metrics;
 import com.github.sirblobman.api.shaded.bstats.charts.SimplePie;
 
 public final class ShulkerPlugin extends ConfigurablePlugin {
+    private final MainConfiguration mainConfiguration;
     private final ShopAccessManager shopAccessManager;
     private VaultManager hookVault;
 
     public ShulkerPlugin() {
+        this.mainConfiguration = new MainConfiguration();
         this.shopAccessManager = new ShopAccessManager(this);
         this.hookVault = null;
     }
@@ -66,12 +70,24 @@ public final class ShulkerPlugin extends ConfigurablePlugin {
         LanguageManager languageManager = getLanguageManager();
         languageManager.reloadLanguages();
 
+        YamlConfiguration configuration = configurationManager.get("config.yml");
+        this.mainConfiguration.load(configuration);
+
         if (isShopEnabled() && !setupVault()) {
             Logger logger = getLogger();
             logger.warning("The shop is enabled in the configuration, but the Vault economy setup has failed.");
             logger.warning("The shop has been automatically disabled.");
             disableShop();
         }
+    }
+
+    @Override
+    public boolean isDebugMode() {
+        return getMainConfiguration().isDebugMode();
+    }
+
+    public @NotNull MainConfiguration getMainConfiguration() {
+        return this.mainConfiguration;
     }
 
     public @NotNull ShopAccessManager getShopAccessManager() {
@@ -87,13 +103,11 @@ public final class ShulkerPlugin extends ConfigurablePlugin {
     }
 
     public boolean isShopEnabled() {
-        YamlConfiguration configuration = getConfig();
-        return configuration.getBoolean("shop-menu.enabled", true);
+        return getMainConfiguration().getShopMenuConfiguration().isEnabled();
     }
 
     private void disableShop() {
-        YamlConfiguration configuration = getConfig();
-        configuration.set("shop-menu.enabled", false);
+        getMainConfiguration().getShopMenuConfiguration().setEnabled(false);
     }
 
     private boolean setupVault() {
@@ -116,6 +130,7 @@ public final class ShulkerPlugin extends ConfigurablePlugin {
 
     private void registerListeners() {
         new ListenerMenu(this).register();
+        new ListenerClick(this).register();
     }
 
     private void registerUpdateChecker() {
